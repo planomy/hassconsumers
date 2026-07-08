@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 5 HASS · We are all consumers</title>
+<style>
+  :root{
+    --bg0:#14100c; --bg1:#1c1610; --bg2:#261e18;
+    --ink:#faf6f0; --ink-dim:#c9bcb0; --ink-faint:#8a7a6a;
+    --panel:#342a22; --panel2:#40342a; --line:#5a4a3d;
+    --chip-bg:#2a221a;
+    --cream:#fff8ed; --cream-ink:#2a2018;
+    --amber:#f9d45d; --amber2:#ffe082;
+    --accent:#c4845a; --accent2:#d9a070; --teal:#c4845a; --mint:#d9a070;
+    --accent-on:#2a1a10;
+    --notice-bg:#faf0e6; --notice-ink:#3d2818; --notice-border:#d9a070;
+    --gold:#d9a070;
+    /* phase accents */
+    --p1:#ff5a6e; --p2:#d9a070; --p3:#5aa9ff; --p4:#b88bff; --p5:#ffb347;
+    --radius:18px;
+    --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:var(--font); color:var(--ink);
+    background:var(--bg0);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+
+  #app{ width:100vw; height:100vh; display:flex; flex-direction:column; }
+  #stageWrap{ flex:1; display:flex; align-items:center; justify-content:center; padding:18px 18px 6px; min-height:0; }
+  .slide{
+    position:relative; width:min(1180px,100%); aspect-ratio:16/10; max-height:100%;
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(217,160,112,.06), transparent 60%),
+      linear-gradient(160deg,var(--bg1),var(--bg2) 60%, #1e1814);
+    border:1px solid var(--line); border-radius:26px;
+    box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+    padding:26px 38px; overflow:hidden; display:flex; flex-direction:column;
+  }
+
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
+    background:rgba(217,160,112,.10); color:var(--accent2); border:1px solid rgba(217,160,112,.28);
+    font-weight:800; letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+    padding:7px 14px; border-radius:999px; }
+  h1.title{ font-size:clamp(28px,3.6vw,46px); line-height:1.02; margin:10px 0 12px; letter-spacing:-.01em; }
+  .slide.cover h1.title{ font-size:clamp(40px,6vw,76px); }
+
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px; flex:1; min-height:0; }
+  .cols.wide-left{ grid-template-columns:1.25fr .9fr; }
+  .col{ display:flex; flex-direction:column; gap:8px; min-height:0; overflow:hidden; }
+  .col::-webkit-scrollbar{ width:6px; } .col::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+
+  /* IMAGE RULES — text first, images fill leftover space, caption overlaid on image only */
+  html:not(.presenting):not(:fullscreen) .col > .card.cream,
+  html:not(.presenting):not(:fullscreen) .col > .steps{ flex:0 1 auto; min-height:0; max-height:62%; overflow:auto; }
+  .col > .imgframe,
+  .col > .imgrow{ flex:1 1 0; min-height:72px; min-width:0; width:100%; }
+
+  .card{ border-radius:var(--radius); padding:20px 22px; }
+  .card.cream{ background:var(--cream); color:var(--cream-ink); box-shadow:0 10px 30px rgba(0,0,0,.25); overflow:auto; }
+  .card.dark{ background:var(--panel); border:1px solid var(--line); }
+  .tag{ display:inline-block; font-weight:900; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    background:var(--amber); color:#3a2c00; padding:5px 12px; border-radius:999px; margin-bottom:12px; }
+  .tag.read{background:var(--amber)} .tag.wow{background:#ff6b8a;color:#3a0010}
+  .tag.do{background:var(--mint);color:var(--accent-on)} .tag.try{background:#ffd766;color:#3a2c00}
+  .card h3{ font-size:clamp(18px,2vw,24px); margin-bottom:8px; }
+  .card.cream p, .card.cream li{ font-size:clamp(15px,1.45vw,19px); line-height:1.45; }
+  .notice{ margin-top:12px; background:var(--notice-bg); border-left:5px solid var(--notice-border); color:var(--notice-ink);
+    padding:10px 13px; border-radius:10px; font-size:14.5px; }
+  .notice b{color:#6b4428}
+
+  .hook{ background:var(--panel2); border:1px solid var(--line); border-radius:var(--radius); padding:10px 15px; }
+  .hook .lbl{ color:var(--amber2); font-weight:800; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  .hook p{ font-size:clamp(15px,1.5vw,20px); margin-top:5px; line-height:1.3; }
+
+  .card.dark.wp{ padding:14px 16px; }
+  .wp h4{ color:var(--ink); font-size:16px; margin-bottom:8px; }
+  .wp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+  .chip{ background:var(--chip-bg); border:1px solid var(--line); border-radius:11px; padding:7px 10px; }
+  .chip b{ display:block; font-size:14.5px; color:var(--mint); }
+  .chip span{ font-size:12px; color:var(--ink-dim); line-height:1.25; }
+
+  .brain{ background:linear-gradient(150deg,var(--panel),var(--panel2)); border:1px solid var(--line); border-radius:var(--radius); padding:12px 16px; }
+  .brain .lbl{ display:flex; align-items:center; gap:9px; color:var(--amber2); font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:12px; margin-bottom:8px;}
+  .brain ol{ list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .brain li{ display:flex; gap:10px; font-size:clamp(13.5px,1.35vw,17px); line-height:1.28; }
+  .brain .n{ flex:none; width:24px; height:24px; border-radius:50%; display:grid; place-items:center;
+    font-weight:900; font-size:13px; color:var(--accent-on); background:linear-gradient(135deg,var(--mint),var(--accent)); }
+
+  .steps{ background:var(--cream); color:var(--cream-ink); border-radius:var(--radius); padding:18px 20px; }
+  .steps .tag{margin-bottom:14px}
+  .steps .row{ display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px dashed #d8cda6;}
+  .steps .row:last-child{border-bottom:none}
+  .steps .num{ flex:none; width:30px; height:30px; border-radius:50%; background:var(--panel2); color:var(--mint);
+    display:grid; place-items:center; font-weight:900; }
+  .steps .row b{ font-size:18px; display:block; }
+  .steps .row span{ font-size:15px; color:#4a5a54; }
+
+  .exit{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; }
+  .exit h4{ font-size:20px; margin-bottom:12px; }
+  .exit-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .echk{ display:flex; gap:10px; align-items:center; background:var(--chip-bg); border:1px solid var(--line);
+    border-radius:12px; padding:10px 12px; font-size:14.5px; }
+  .echk .bx{ flex:none; width:24px;height:24px;border-radius:7px;background:var(--mint);color:var(--accent-on);
+    display:grid;place-items:center;font-weight:900; }
+
+  .imgframe{ position:relative; border-radius:14px; overflow:hidden; border:1px solid var(--line); background:var(--chip-bg); }
+  .imgframe img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .imgframe.diagram img{ object-fit:contain; background:var(--bg0); }
+  .imgframe.fit img{ object-fit:contain; }
+  .imgframe .cap,
+  .imgrow .ic .cap{ position:absolute; left:0; right:0; bottom:0; z-index:1;
+    background:linear-gradient(transparent, rgba(20,16,12,.92)); color:#faf6f0; font-size:12.5px; padding:18px 12px 8px; font-weight:600; }
+  .imgrow{ display:grid; gap:6px; min-height:0; align-items:stretch; }
+  .imgrow .ic{ position:relative; min-height:0; min-width:0; border-radius:11px; overflow:hidden; border:1px solid var(--line); background:var(--chip-bg); }
+  .imgrow .ic img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .imgrow .ic.fit img{ object-fit:contain; background:var(--bg0); }
+
+  table.dt{ width:100%; border-collapse:collapse; font-size:15px; }
+  table.dt th, table.dt td{ border:1px solid var(--line); padding:8px 10px; text-align:left; }
+  table.dt th{ background:var(--panel2); color:var(--mint); }
+  .card.cream table.dt th{ background:#efe6c8; color:#3a2c00;}
+  .card.cream table.dt th, .card.cream table.dt td{ border-color:#d8cda6;}
+
+  .bank{ display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 4px;}
+  .bank span{ background:var(--chip-bg);border:1px solid var(--line);color:var(--mint);
+    padding:6px 12px;border-radius:999px;font-weight:700;font-size:14px;}
+
+  .slide.cover{ align-items:flex-start; justify-content:center; text-align:left; }
+  .cover .sub{ font-size:clamp(18px,2.2vw,26px); color:var(--ink-dim); max-width:760px; line-height:1.4;}
+  .cover .meta{ margin-top:auto; display:flex; gap:22px; flex-wrap:wrap; color:var(--ink-faint); font-weight:700; letter-spacing:.05em;}
+  .cover .pill{ background:rgba(217,160,112,.10); border:1px solid rgba(217,160,112,.25); color:var(--mint); padding:8px 16px; border-radius:999px;}
+
+  .slide.divider{ justify-content:center; }
+  .divider .pkr{ font-size:clamp(20px,3vw,30px); color:var(--ink-dim); font-weight:800; letter-spacing:.2em; text-transform:uppercase;}
+  .divider h1{ font-size:clamp(40px,6vw,72px); margin:10px 0 18px;}
+  .divider .goals{ display:flex; flex-direction:column; gap:12px; max-width:840px;}
+  .divider .goal{ display:flex; gap:14px; align-items:center; font-size:clamp(17px,1.9vw,22px); background:var(--panel); border:1px solid var(--line); padding:14px 18px; border-radius:14px;}
+  .divider .goal i{ flex:none; width:34px;height:34px;border-radius:10px; display:grid;place-items:center;font-style:normal;font-weight:900;color:var(--accent-on);}
+
+  .slide.checkpoint{ justify-content:center; text-align:center; align-items:center;}
+  .checkpoint h1{font-size:clamp(34px,5vw,60px)}
+  .checkpoint p{font-size:clamp(18px,2vw,24px); color:var(--ink-dim); max-width:780px; margin:14px auto 24px;}
+
+  .eyebrow-r{ position:absolute; right:38px; top:30px; color:var(--ink-faint); font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;}
+
+  /* Present mode — scale slide to fill viewport (Teams / laptop share) */
+  html.presenting body,html:fullscreen body{align-items:stretch;justify-content:stretch;background:var(--bg1);}
+  html.presenting #app,html:fullscreen #app{height:100dvh;}
+  html.presenting #nav,html:fullscreen #nav{flex-shrink:0;padding:8px 10px;background:var(--bg0);border-top:1px solid var(--line);}
+  html.presenting #stageWrap,html:fullscreen #stageWrap{
+    padding:0;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    background:var(--bg1);
+  }
+  html.presenting .slide,html:fullscreen .slide{
+    width:1180px;height:738px;max-width:none;max-height:none;aspect-ratio:auto;flex-shrink:0;
+    border-radius:0;border:none;box-shadow:none;
+    padding:26px 38px 48px;
+    transform-origin:center center;
+  }
+  html.presenting .cols,html:fullscreen .cols{flex:1;min-height:0;align-content:stretch;grid-template-rows:minmax(0,1fr);}
+  html.presenting .col,html:fullscreen .col{height:100%;min-height:0;}
+  html.presenting .col > .card.cream,html.presenting .col > .steps,html.presenting .col > .brain,html.presenting .col > .hook,
+  html:fullscreen .col > .card.cream,html:fullscreen .col > .steps,html:fullscreen .col > .brain,html:fullscreen .col > .hook{
+    flex:1 1 0;min-height:0;max-height:none;overflow:auto;
+  }
+  html.presenting .col > .imgframe,html.presenting .col > .imgrow,
+  html:fullscreen .col > .imgframe,html:fullscreen .col > .imgrow{
+    flex:1 1 0;min-height:100px;max-height:none;overflow:hidden;
+  }
+  html.presenting .col > .exit,html:fullscreen .col > .exit{flex:0 0 auto;}
+  html.presenting h1.title,html:fullscreen h1.title{font-size:clamp(32px,4.2vmin,56px);}
+  html.presenting .card h3,html:fullscreen .card h3{font-size:clamp(20px,2.4vmin,30px);}
+  html.presenting .card.cream p,html.presenting .card.cream li,html:fullscreen .card.cream p,html:fullscreen .card.cream li{font-size:clamp(16px,1.9vmin,26px);}
+  html.presenting .hook p,html:fullscreen .hook p{font-size:clamp(16px,2vmin,28px);}
+  html.presenting .brain li,html:fullscreen .brain li{font-size:clamp(15px,1.75vmin,24px);}
+  html.presenting .steps .row b,html:fullscreen .steps .row b{font-size:clamp(18px,2.1vmin,28px);}
+  html.presenting .steps .row span,html:fullscreen .steps .row span{font-size:clamp(15px,1.75vmin,24px);}
+  html.presenting .exit h4,html:fullscreen .exit h4{font-size:clamp(20px,2.4vmin,30px);}
+  html.presenting .echk,html:fullscreen .echk{font-size:clamp(14px,1.65vmin,22px);}
+  html.presenting .chip b,html:fullscreen .chip b{font-size:clamp(15px,1.75vmin,24px);}
+  html.presenting .chip span,html:fullscreen .chip span{font-size:clamp(13px,1.5vmin,20px);}
+  html.presenting .notice,html:fullscreen .notice{font-size:clamp(14px,1.65vmin,22px);}
+
+  #nav{ display:flex; align-items:center; justify-content:center; gap:10px; padding:10px; flex-wrap:wrap; }
+  .btn{ background:var(--panel2); color:var(--ink); border:1px solid var(--line); border-radius:999px;
+    padding:9px 16px; font-weight:700; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; }
+  .btn:hover{ border-color:var(--mint); color:#fff;}
+  .btn.primary{ background:var(--mint); color:var(--accent-on); border-color:var(--mint);}
+  .btn.assess{ background:linear-gradient(135deg,var(--amber),#ff9d3c); color:#3a2400; border:none; font-weight:900;}
+  .btn.worksheets.linked{ background:linear-gradient(135deg,#7eb8ff,#5aa9ff); color:#0a1a30; border:none; font-weight:800; }
+  .btn.worksheets.unlinked{ background:var(--panel2); color:var(--ink-faint); border:1px solid var(--line); font-weight:700; }
+  .btn.worksheets.unlinked:hover{ border-color:var(--line); color:var(--ink-faint); }
+  .btn.notes-open{border-color:var(--mint);color:#fff;box-shadow:0 0 0 1px rgba(217,160,112,.35);}
+
+  /* appendix — embedded worksheet PDFs */
+  .slide.appendix .appendix-sub{ font-size:clamp(14px,1.45vw,18px); color:var(--ink-dim); line-height:1.4; margin:0 0 10px; max-width:920px; }
+  .slide.appendix .pdfFrame{ flex:1; min-height:0; border-radius:14px; overflow:hidden; border:1px solid var(--line); background:var(--bg0); }
+  .slide.appendix .pdfFrame iframe{ width:100%; height:100%; border:0; display:block; }
+  .slide.appendix .pdfOpen{ margin-top:8px; align-self:flex-start; }
+  .slide.appendix .pdfOpen a{ text-decoration:none; }
+  .slide.appendix-index .worksheetList{ display:flex; flex-direction:column; gap:12px; flex:1; min-height:0; overflow:auto; max-width:720px; width:100%; }
+  .slide.appendix-index .worksheetCard{ text-align:left; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; cursor:pointer; color:var(--ink); font-family:inherit; width:100%; transition:border-color .15s, background .15s, box-shadow .15s; }
+  .slide.appendix-index .worksheetCard:hover{ border-color:var(--accent); background:var(--panel2); }
+  .slide.appendix-index .worksheetCard.highlight{ background:linear-gradient(135deg, rgba(90,169,255,.2), rgba(126,184,255,.08)); border-color:#5aa9ff; box-shadow:0 0 0 1px rgba(90,169,255,.4), 0 8px 24px rgba(90,169,255,.12); }
+  .slide.appendix-index .worksheetCard.highlight b{ color:#b8dcff; }
+  .slide.appendix-index .worksheetCard.highlight span{ color:#d4e8ff; }
+  .slide.appendix-index .worksheetCard b{ display:block; font-size:clamp(17px,1.8vw,22px); margin-bottom:6px; color:var(--amber2); }
+  .slide.appendix-index .worksheetCard span{ font-size:14.5px; color:var(--ink-dim); line-height:1.45; }
+  .worksheetBack{ align-self:flex-start; margin-bottom:8px; }
+
+  #counter{ font-weight:800; color:var(--ink-dim); min-width:74px; text-align:center; }
+  select#jump{ background:var(--panel2); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:9px 12px; font-size:13px; max-width:230px; }
+
+  #tnotes{ position:fixed; right:0; top:0; height:100%; width:min(440px,90vw); transform:translateX(100%);
+    transition:transform .28s ease; background:var(--bg1); border-left:1px solid var(--line); z-index:40;
+    box-shadow:-20px 0 60px rgba(0,0,0,.5); display:flex; flex-direction:column;}
+  #tnotes.open{ transform:none;}
+  html.presenting #tnotes,html:fullscreen #tnotes{z-index:100;height:100dvh;}
+  #tnotes header{ padding:18px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-shrink:0;}
+  #tnotes header b{ color:var(--amber2); letter-spacing:.04em;}
+  #tnotes header .slide-label{display:block;font-size:12px;font-weight:700;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+  #tnotes .body{ padding:20px; overflow:auto; flex:1; min-height:0; font-size:15.5px; line-height:1.55; color:var(--ink-dim);}
+  #tnotes .body h4{color:var(--mint); margin:14px 0 6px; font-size:16px;}
+  #tnotes .body ul{margin:6px 0 6px 18px;}
+  #tnotes .body li{margin:4px 0;}
+
+  #overlay{ position:fixed; inset:0; background:rgba(8,14,18,.84); backdrop-filter:blur(6px); z-index:60;
+    display:none; align-items:center; justify-content:center; padding:24px;}
+  #overlay.open{display:flex;}
+  .modal{ width:min(1100px,100%); height:min(88vh,820px); background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    border:1px solid var(--line); border-radius:22px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 40px 100px rgba(0,0,0,.6);}
+  .modal header{ padding:16px 22px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:14px;}
+  .modal header h2{ font-size:22px; margin-right:auto;}
+  .tabs{ display:flex; gap:8px;}
+  .tab{ background:var(--panel2); border:1px solid var(--line); color:var(--ink-dim); padding:8px 16px; border-radius:999px; cursor:pointer; font-weight:700; font-size:14px;}
+  .tab.active{ background:var(--amber); color:#3a2400; border-color:var(--amber);}
+  .modal .content{ padding:24px; overflow:auto; flex:1;}
+  .modal .content h3{ color:var(--mint); margin:18px 0 8px; font-size:20px;}
+  .modal .content h3:first-child{margin-top:0}
+  .modal .content p, .modal .content li{ font-size:16px; line-height:1.55; color:var(--ink); }
+  .modal .content ul{margin:6px 0 6px 20px}
+  .panelpane{display:none} .panelpane.active{display:block}
+  .rubric{ width:100%; border-collapse:collapse; font-size:13px; margin-top:8px;}
+  .rubric th,.rubric td{ border:1px solid var(--line); padding:8px; vertical-align:top; text-align:left;}
+  .rubric th{ background:var(--panel2); color:var(--amber2);}
+  .rubric td:first-child{ background:var(--chip-bg); color:var(--mint); font-weight:800; width:150px;}
+  .rubric .A{background:rgba(217,160,112,.06)}
+  .assess-doc .assess-open{ margin-bottom:12px; }
+  .assess-doc .assess-open a{ color:var(--amber2); font-weight:800; }
+  .assess-doc .assess-source{ width:100%; height:auto; border-radius:12px; border:1px solid var(--line); background:#fff; }
+  #pane-task.active{ display:flex; flex-direction:column; min-height:0; flex:1; }
+  .assess-pdfFrame{ flex:1; min-height:min(68vh,640px); border-radius:14px; overflow:hidden; border:1px solid var(--line); background:var(--bg0); }
+  .assess-pdfFrame iframe{ width:100%; height:100%; border:0; display:block; min-height:min(68vh,640px); }
+  .modal footer{ padding:14px 22px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;}
+  .hint{color:var(--ink-faint); font-size:13px;}
+
+  @media (max-width:720px){
+    .cols{grid-template-columns:1fr; overflow:auto;}
+    .wp-grid,.exit-grid{grid-template-columns:1fr;}
+    select#jump{max-width:130px;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stageWrap"><div class="slide" id="slide"></div></div>
+  <div id="nav">
+    <button class="btn" id="prev">← Prev</button>
+    <span id="counter">1 / 1</span>
+    <select id="jump"></select>
+    <button class="btn assess" id="assessBtn">📋 Assessment</button>
+    <button class="btn worksheets unlinked" id="worksheetsBtn" title="Worksheets (W)">📄 Worksheets</button>
+    <button class="btn" id="notesBtn">Teacher notes</button>
+    <button class="btn" id="presentBtn" title="Maximise slide for screen share (F · Esc to exit)">⛶ Present</button>
+    <button class="btn" id="next">Next →</button>
+  </div>
+</div>
+
+<aside id="tnotes">
+  <header><div><b>Teacher Notes</b><span class="slide-label" id="tnotesTitle"></span></div>
+    <span><button class="btn" id="detachBtn">Detach ⧉</button>
+    <button class="btn" id="notesClose">✕</button></span>
+  </header>
+  <div class="body" id="tnotesBody"></div>
+</aside>
+
+<div id="overlay">
+  <div class="modal">
+    <header>
+      <h2>📋 Assessment — Consumer Decision-Making</h2>
+      <div class="tabs">
+        <button class="tab active" data-pane="task">Task</button>
+        <button class="tab" data-pane="source1">Source 1</button>
+        <button class="tab" data-pane="source2">Source 2</button>
+        <button class="tab" data-pane="guide">Marking Guide</button>
+      </div>
+    </header>
+    <div class="content">
+      <div class="panelpane active" id="pane-task"></div>
+      <div class="panelpane" id="pane-source1"></div>
+      <div class="panelpane" id="pane-source2"></div>
+      <div class="panelpane" id="pane-guide"></div>
+    </div>
+    <footer>
+      <span class="hint">Tip: press <b>A</b> to open/close · this opens on top of any slide</span>
+      <button class="btn primary" id="backBtn">← Back to my slide</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SLIDE DATA — add lessons below. Each entry = one screen.
+   Block types: read, hook, wp, brain, steps, exit, img, imgrow, html
+   Image rules: text (read/steps) first · img/imgrow below fills remaining height · cap overlays image only
+   Optional flags: img.diagram (charts/diagrams, contain fit) · img.fit (illustrations — show full image, slight letterbox) · imgrow item.fit (portrait photos)
+   Slide types: cover, divider, checkpoint, appendix-index, appendix, lesson (default)
+   ========================================================= */
+const WORKBOOK_PDF = 'workbook-categorise-needs-wants.pdf';
+const WORKBOOK_RESOURCES_PDF = 'workbook-categorising-resources.pdf';
+const WORKBOOK_NEEDS_WANTS_PDF = 'workbook-needs-wants-groups.pdf';
+const WORKBOOK_MP3_PDF = 'workbook-making-informed-decisions-mp3.pdf';
+const WORKBOOK_CINEMA_PDF = 'workbook-cinema-budget.pdf';
+const WORKBOOK_PICNIC_PDF = 'workbook-picnic-budget.pdf';
+const WORKBOOK_FINITE_PDF = 'workbook-finite-resources.pdf';
+
+/* lesson screen → workbook appendix slug(s) */
+const WORKBOOK_BY_NAV = {
+  'L1B — Sort your life': 'workbook-needs-wants',
+  'L2B — Needs for different groups': 'workbook-needs-wants-groups',
+  'L3B — Categorise resources': 'workbook-categorising-resources',
+  'L6B — Decide for Limes': 'workbook-finite-resources',
+  'L10B — Cinema budget challenge': 'workbook-cinema',
+  'L13B — MP3 + picnic decisions': ['workbook-mp3', 'workbook-picnic'],
+};
+const SLIDES = [];
+
+const ASSESS_PDF = 'HASS_Y05_AT_ConsumerDec.pdf';
+const ASSESS_SOURCE_1 = 'assessment-media/source-1.png';
+const ASSESS_SOURCE_2 = 'assessment-media/source-2.png';
+/* lesson screen → default assessment tab when 📋 opens */
+const ASSESS_TAB_BY_NAV = {
+  'L7A — What do the graphs tell us?': 'source1',
+  'L7B — Graph detectives': 'source1',
+  'L14B — Part A rehearsal': 'source1',
+  '★ Part A Assessment (Week 7)': 'task',
+  'L14A — Haircut economics': 'source2',
+  'L15A — Choose the fundraiser product': 'source2',
+  'L15B — Draft your TEEL': 'source2',
+  '★ Part B Assessment (Week 8)': 'source2',
+};
+/* ===== Assessment overlay — official C2C task (HASS_Y05_AT_ConsumerDec.pdf) ===== */
+const ASSESS_TASK = `
+  <div class="assess-doc">
+    <p class="assess-open"><a href="${ASSESS_PDF}" target="_blank" rel="noopener">↗ Open assessment task PDF in new tab</a> — print or save</p>
+    <div class="assess-pdfFrame"><iframe src="${ASSESS_PDF}" title="Assessment task — Consumer decision-making"></iframe></div>
+  </div>
+`;
+const ASSESS_SOURCE1 = `
+  <div class="assess-doc">
+    <p class="assess-open"><a href="${ASSESS_SOURCE_1}" target="_blank" rel="noopener">↗ Open Source 1 in new tab</a></p>
+    <h3 style="margin-top:0">Source 1: Information about the Limes State School fundraising event</h3>
+    <p>Use this source for <b>Part A</b> — identify factors from the graphs and explain how they influence consumer choices at the fete.</p>
+    <img class="assess-source" src="${ASSESS_SOURCE_1}" alt="Source 1 — fete flyer, attendance pie chart, and average temperatures in Limes">
+  </div>
+`;
+const ASSESS_SOURCE2 = `
+  <div class="assess-doc">
+    <p class="assess-open"><a href="${ASSESS_SOURCE_2}" target="_blank" rel="noopener">↗ Open Source 2 in new tab</a></p>
+    <h3 style="margin-top:0">Source 2: Information about different product options</h3>
+    <p>Use this source for <b>Part B</b> — compare hot chocolate &amp; coffee, iceblocks, and pancakes, then make and explain your decision.</p>
+    <img class="assess-source" src="${ASSESS_SOURCE_2}" alt="Source 2 — product comparison table with prices, resources, and consumer factors">
+  </div>
+`;
+const ASSESS_GUIDE = `
+  <p><em>Teacher reference — criteria aligned to the official task descriptors. Replace if your school issues a separate A–E marking guide.</em></p>
+  <table class="rubric">
+    <tr><th>Criterion</th><th class="A">A (aim here)</th><th>B–E</th></tr>
+    <tr><td>Factors influencing choices</td>
+      <td class="A">Identifies and <b>explains</b> multiple factors (personal, social, economic, psychological, cultural, environmental) with clear links to the scenario</td>
+      <td>Identifies factors with partial explanation → lists factors with limited detail</td></tr>
+    <tr><td>Decision-making strategies</td>
+      <td class="A">Identifies <b>effective</b> strategies and explains <b>how</b> each helps, with relevant examples</td>
+      <td>Names strategies with some explanation → names strategies only</td></tr>
+    <tr><td>Analysing options &amp; data</td>
+      <td class="A">Uses data from sources to compare options; recognises resource limits; makes a <b>reasoned</b> decision</td>
+      <td>Compares options with support → partial comparison</td></tr>
+    <tr><td>Communicating (TEEL)</td>
+      <td class="A">Structured paragraph with topic sentence, explanation of strategies, elaboration (factors + pros/cons + alternatives), and link — uses HASS terms correctly</td>
+      <td>Clear paragraph with most TEEL elements → partial structure</td></tr>
+    <tr><td>Resource allocation</td>
+      <td class="A">Shows understanding that choices must be made when allocating limited resources to meet needs and wants</td>
+      <td>States that choices are needed → limited awareness</td></tr>
+  </table>
+`;
+
+/* ============================ COVER ============================ */
+SLIDES.push({ type:'cover', nav:'Cover',
+  eyebrow:'Year 5 HASS · BrisbaneSDE',
+  title:'We are all consumers',
+  sub:'Every day you choose what to buy, what to skip, and what to save for. Explore needs and wants, discover what shapes your choices, and learn to decide like a smart consumer in your community.',
+  meta:['8 teaching weeks · 16 lessons','Part A · Week 7','Part B · Week 8','Online-ready'],
+  bg:'cover-hero.jpeg',
+  bgPos:'-10% center',
+  notes:`<p>Welcome. Set the big question: <b>How do communities decide how to use limited resources?</b></p>
+  <h4>Hook</h4><p>Ask: "If our class had $500 for the term, what would we spend it on?" — preview scarcity and allocation.</p>
+  <h4>Real data (ABS)</h4><p>Australian households spent an average of <b>$1,425 per week</b> on goods and services in 2015–16 (ABS Household Expenditure Survey). Housing, food and transport made up about half of that spending — a useful anchor for "limited resources" all term.</p>
+  <h4>Navigation</h4><ul>
+    <li><b>← →</b> Prev/Next · <b>Jump</b> menu · <b>T</b> teacher notes · <b>D</b> detach</li>
+    <li><b>A</b> Assessment overlay · <b>W</b> Worksheets · <b>F</b> Present fullscreen · buttons in nav bar</li>
+  </ul>` });
+
+/* ===================== PHASE 1 ======================== */
+SLIDES.push({ type:'divider', nav:'Phase 1 — Needs, Wants & Resources',
+  eyebrow:'Phase 1 · Weeks 1–3',
+  title:'Needs, Wants & Resources',
+  goals:[
+    'Distinguish needs from wants and explain why it matters',
+    'Identify natural, human and capital resources',
+    'Classify goods and services and explain how resources are used',
+    'Use economics vocabulary accurately in discussion'
+  ],
+  notes:`<p>Phase 1 builds the foundation for Part A: needs, wants, resources, goods and services.</p>
+  <h4>Real data (ABS)</h4><p>In 2015–16, Australian households spent <b>17%</b> of weekly goods-and-services spending on food and non-alcoholic beverages (~$237/week average) and <b>20%</b> on housing costs (ABS HES 2015–16). Scarcity is not abstract — families make trade-offs every week.</p>
+  <h4>Pacing</h4><p>Weeks 1–3 · 6 lessons. Aim for one workbook section per lesson pair.</p>` });
+
+/* ===== LESSON 1 ===== */
+SLIDES.push({ nav:'L1A — Needs or wants?',
+  eyebrow:'Week 1 · Lesson 1 · Learn / Read / Notice', eyebrowR:'Lesson 1 · Screen A',
+  title:'Do you <i>need</i> it — or just <i>want</i> it?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'The $100 question', body:[
+    'Imagine you have exactly <b>$100</b>. You could buy the latest game, new shoes, a phone case, or groceries for the week. You cannot buy everything — so you must <b>choose</b>.',
+    'In economics, a <b>need</b> is something necessary to maintain a basic standard of living (food, shelter, water, clothing). A <b>want</b> is something you desire for satisfaction — nice to have, but not essential for survival.',
+    'Here is the twist: what counts as a "need" can change depending on <b>who you are</b>, <b>where you live</b>, and <b>when</b> you live. A smartphone might be a want for one person and a need for someone who relies on it for work or school.'
+  ], notice:'Needs and wants are not always fixed — context and community matter.'},
+    {k:'img', src:'resources.jpeg', fit:true, cap:'Every aisle is a choice — needs, wants, and a budget that cannot buy everything.'}],
+  right:[{k:'hook', q:'Is Wi-Fi a need or a want in 2026? Could two people disagree — and both be right?'},
+    {k:'wp', list:[
+      {t:'consumer',d:'a person who uses goods and services'},{t:'need',d:'necessary for basic standard of living'},
+      {t:'want',d:'desired but not essential for survival'},{t:'economics',d:'study of how resources are allocated'},
+      {t:'scarcity',d:'unlimited wants, limited resources'},{t:'choice',d:'selecting one option over another'}
+    ]},
+    {k:'brain', q:[
+      'If you had to give up either food or entertainment forever, which would you choose — and what does that tell us about needs?',
+      'Can a want become a need over time? Give an example.',
+      'Who decides what counts as a "basic standard of living" — you, your family, or the community?'
+    ]}],
+  notes:`<h4>Hook (5 min)</h4><p>Quick poll: need or want? (Netflix, school uniform, chocolate, medicine, Wi‑Fi). Discuss "it depends" — context changes the label.</p>
+  <h4>Real data (ABS)</h4><p>ABS HES 2015–16: recreation spending averaged <b>$172/week</b> per household — wants are a large, real share of household budgets, not just "extra treats."</p>
+  <h4>Slide image</h4><p>Resources diagram on this slide — link back: even a shopping trip needs natural, human and capital inputs.</p>
+  <h4>Assessment</h4><p>Preview the term task: community decision-making at the Limes State School fundraiser (Part A &amp; B).</p>
+  <h4>Watch for</h4><p>Students who label everything a "need." Push: <i>Who decides the basic standard of living?</i></p>` });
+
+SLIDES.push({ nav:'L1B — Sort your life',
+  eyebrow:'Week 1 · Lesson 1 · Practise / Sort / Share', eyebrowR:'Lesson 1 · Screen B',
+  title:'Sort your life: needs and wants',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'List 10 items', d:'Things you or your family spend money on in a typical month.'},
+    {t:'Sort them', d:'Label each N (need) or W (want). Be ready to defend tricky ones.'},
+    {t:'Pick 3 tricky ones', d:'Choose 3 you argued about. Write one sentence explaining your reasoning.'},
+    {t:'Share', d:'Post your trickiest item to the class board — can anyone argue the other side?'}
+  ]},
+    {k:'img', src:'consumerism.webp', cap:'Every ad, aisle and trend pushes us to want more — sorting needs from wants takes clear thinking.'}],
+  right:[{k:'html', html:`<div class="card cream"><span class="tag try">WORKSHEET PRACTICE</span>
+    <p style="margin-top:8px">Complete <b>Categorise needs and wants</b> Q.1–5 from your worksheets.</p></div>`},
+    {k:'exit', items:['define need and want in my own words','sort items as needs or wants with reasons','explain that needs can differ between people and communities','use the word scarcity correctly']}],
+  notes:`<h4>Worksheet</h4><p>Worksheets Q.1–5. Conference on "tricky" items — push for justification, not just N/W labels.</p>
+  <h4>Discussion prompt</h4><p>Compare lists for a toddler vs a grandparent vs a refugee family. ABS data shows spending patterns shift sharply by household composition (e.g. education spending up <b>43.5%</b> 2009–10 to 2015–16, ABS HES).</p>
+  <h4>Exit check</h4><p>Listen for <b>scarcity</b> used correctly — unlimited wants, limited money/resources.</p>` });
+
+/* ===== LESSON 2 ===== */
+SLIDES.push({ nav:'L2A — Same planet, different lists',
+  eyebrow:'Week 1 · Lesson 2 · Learn / Read / Notice', eyebrowR:'Lesson 2 · Screen A',
+  title:'Same planet, different shopping lists',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'Needs change with the person', body:[
+    'A baby\'s needs include nappies and formula. A tradesperson might need steel-capped boots to do their job safely. A family in a cold climate needs heating; a family in the tropics might prioritise shade and water storage.',
+    'When we <b>categorise</b> needs and wants for different groups, we are thinking like economists — and like members of a <b>community</b> who must decide how to share limited resources fairly.'
+  ], notice:'Smart consumers and communities consider WHO they are deciding for — not just themselves.'},
+    {k:'img', src:'diapers-and-formula.jpeg', cap:'A baby\'s needs — nappies and formula are essentials for many families.'}],
+  right:[{k:'hook', q:'Would a school principal\'s "needs list" look the same as a Year 5 student\'s? What would be on each?'},
+    {k:'wp', list:[
+      {t:'categorise',d:'sort into groups by features'},{t:'community',d:'a group of people in a place'},
+      {t:'allocate',d:'share or distribute a resource'},{t:'resource allocation',d:'assigning limited resources'},
+      {t:'standard of living',d:'quality of life in a community'},{t:'perspective',d:'a point of view'}
+    ]},
+    {k:'brain', q:[
+      'Should a community spend more on playgrounds or libraries? What would each group say?',
+      'Is it fair for one person to decide needs for everyone? Why or why not?',
+      'When Limes State School chooses how to use land, whose needs should count most?'
+    ]}],
+  notes:`<h4>Foreshadow</h4><p>Name-drop <b>Limes State School</b> — returns Lesson 6 and in both assessments.</p>
+  <h4>Real data (ABS)</h4><p>Health spending averaged <b>$82/week</b> per household in 2015–16 (ABS HES) — needs lists look different for elderly residents vs Year 5 students.</p>
+  <h4>Community link</h4><p>Playground vs library debate = early version of resource allocation (same skill as choosing a fundraiser product).</p>` });
+
+SLIDES.push({ nav:'L2B — Needs for different groups',
+  eyebrow:'Week 1 · Lesson 2 · Practise / Write / Share', eyebrowR:'Lesson 2 · Screen B',
+  title:'Needs and wants for different groups',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Pick 2 groups', d:'e.g. elderly residents + Year 5 students, or new families + long-time locals.'},
+    {t:'List top 3 needs', d:'For each group — what do they need most from their community?'},
+    {t:'Find a conflict', d:'Where do the two groups want different things? That is where decisions get hard.'},
+    {t:'Worksheet', d:'Complete the <b>Needs and wants for different groups</b> worksheet.'}
+  ]},
+    {k:'img', src:'elderly-youngsters.avif', cap:'Different ages, different needs — whose voice gets heard when a community decides?'}],
+  right:[{k:'exit', items:['compare needs and wants for different groups','explain why the same item can be a need for one person and a want for another','identify where community needs conflict','use perspective in my reasoning']}],
+  notes:`<h4>Discussion</h4><p>Conflicting needs = setup for resource allocation and the assessment fundraiser scenario.</p>
+  <h4>Extension</h4><p>Two groups, one budget: if the P&amp;C has $2,000, can both groups' top-3 needs be fully met? (No — force prioritising.)</p>
+  <h4>Marking tip</h4><p>Reward <b>perspective</b> language: "From a parent's view…" / "Students might argue…"</p>` });
+
+/* ===== LESSON 3 ===== */
+SLIDES.push({ nav:'L3A — Where does stuff come from?',
+  eyebrow:'Week 2 · Lesson 3 · Learn / Read / Notice', eyebrowR:'Lesson 3 · Screen A',
+  title:'Where does stuff actually come from?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'Three kinds of resources', body:[
+    'Everything you buy started as a <b>resource</b> — something used to produce goods and services. Economists group resources into three types:',
+    '<b>Natural resources</b> — air, water, land, minerals, trees. <b>Human resources</b> — people\'s labour, skills and brainpower (chefs, nurses, designers, you!). <b>Capital resources</b> — things already made that help produce more (machines, tools, ovens, shops, laptops).',
+    'Production usually needs a <b>combination</b> of all three. A pancake stall needs flour (natural), a cook (human), and a hotplate (capital).'
+  ], notice:'Resources are limited. Combining them wisely is what economics is about.'},
+    {k:'img', src:'needs-wants.jpeg', cap:'Natural, human and capital resources combine to make every product and service.'}],
+  right:[{k:'hook', q:'You want to run a lemonade stand. What natural, human and capital resources would you need?'},
+    {k:'wp', list:[
+      {t:'natural resource',d:'air, water, land, materials from earth'},{t:'human resource',d:'people\'s work and skills'},
+      {t:'capital resource',d:'tools, machines, buildings'},{t:'goods',d:'tangible items you can touch'},
+      {t:'services',d:'intangible help (haircut, delivery)'},{t:'limited',d:'finite — there is only so much'}
+    ]},
+    {k:'brain', q:[
+      'Is a smartphone a natural, human or capital resource — or all three?',
+      'What happens when a natural resource runs out?',
+      'Why do we say resources are "scarce" even in a wealthy country like Australia?'
+    ]}],
+  notes:`<h4>Video</h4><p>Unit plan YouTube clip on resources if available — then classify examples together.</p>
+  <h4>Real data (ABS)</h4><p>Transport averaged <b>$207/week</b> per household in 2015–16 (ABS HES) — a lemonade stand still needs capital (table, jugs) and human labour even when ingredients seem "free."</p>
+  <h4>Slide image</h4><p>Supermarket photo — every product on the shelf required a resource chain.</p>
+  <h4>Common error</h4><p><b>Water</b> — natural when falling as rain; capital/human when bottled and sold. Context matters.</p>` });
+
+SLIDES.push({ nav:'L3B — Categorise resources',
+  eyebrow:'Week 2 · Lesson 3 · Practise / Sort / Share', eyebrowR:'Lesson 3 · Screen B',
+  title:'Categorise the resources',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Pick a product', d:'Something from your kitchen or bedroom.'},
+    {t:'Trace it back', d:'List one natural, one human and one capital resource used to make it.'},
+    {t:'Worksheet', d:'Complete the <b>Categorising resources</b> worksheet.'}
+  ]},
+    {k:'img', src:'kid-bedroom.avif', cap:'Pick something from your bedroom — what natural, human and capital resources made it?'}],
+  right:[{k:'html', html:`<div class="card dark"><h4 style="margin-bottom:8px">Quick sort</h4>
+    <table class="dt"><tr><th>Item</th><th>Natural</th><th>Human</th><th>Capital</th></tr>
+    <tr><td>Wood fired pizza</td><td>✓ wood, wheat</td><td>✓ chef</td><td>✓ oven</td></tr>
+    <tr><td>Your example</td><td></td><td></td><td></td></tr></table></div>`},
+    {k:'exit', items:['name the three types of resources','give an example of each type','explain that production uses a combination of resources','complete the categorising resources worksheet']}],
+  notes:`<h4>Worksheet Q.1–2</h4><p>Check capital vs natural — bottled water vs rainwater catches many students.</p>
+  <h4>Quick sort</h4><p>Pizza row on slide: wood + wheat (natural), chef (human), oven (capital). Students trace their own product the same way.</p>
+  <h4>Fun fact (ABS)</h4><p>Household spending on furnishings/equipment averaged <b>$58/week</b> in 2015–16 — capital resources in homes are already a major spend category (ABS HES).</p>` });
+
+/* ===== LESSON 4 ===== */
+SLIDES.push({ nav:'L4A — Goods, services & the cake stall',
+  eyebrow:'Week 2 · Lesson 4 · Learn / Read / Notice', eyebrowR:'Lesson 4 · Screen A',
+  title:'Goods, services — and the cake stall',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'Can you touch it?', body:[
+    '<b>Goods</b> are tangible — you can see and touch them (a cake, a book, a phone). <b>Services</b> are intangible — someone does something for you (a haircut, a flight, a lesson, a delivery).',
+    'Your school wants to run a <b>cake stall</b> at the fete. List every <b>good</b> you would need (ingredients, plates, signage) and every <b>service</b> (baking, selling, cleaning up, advertising). Both cost resources — and both help satisfy needs and wants.'
+  ], notice:'Fundraising events need goods AND services — and people to provide them.'},
+    {k:'img', src:'cake-stall.jpeg', cap:'A cake stall needs goods (ingredients, plates) and services (baking, selling, cleaning).'}],
+  right:[{k:'hook', q:'Is a Netflix subscription a good or a service? What about a downloaded game?'},
+    {k:'wp', list:[
+      {t:'goods',d:'tangible products'},{t:'services',d:'intangible help or work'},
+      {t:'transaction',d:'exchange of money for a product'},{t:'transaction type',d:'cash, debit, credit'},
+      {t:'produce',d:'make goods or deliver services'},{t:'satisfy',d:'meet a need or want'}
+    ]},
+    {k:'brain', q:[
+      'Could you run a cake stall with goods but no services? What would go wrong?',
+      'Which uses more human resources — selling iceblocks or hot chocolate?',
+      'When you pay for a haircut, what exactly are you buying?'
+    ]}],
+  notes:`<h4>Cake stall activity</h4><p>From unit plan — list goods AND services. Services often forgotten (clean-up, EFTPOS, advertising).</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): household spending on <b>hotels, cafes and restaurants</b> rose <b>1.5%</b> through the year — food events are a real consumer category, not just school fiction.</p>
+  <h4>Discuss</h4><p>Netflix/downloaded game = service (access/licence), not a good you hold.</p>` });
+
+SLIDES.push({ nav:'L4B — Cake stall planner',
+  eyebrow:'Week 2 · Lesson 4 · Practise / Plan / Share', eyebrowR:'Lesson 4 · Screen B',
+  title:'Plan the cake stall',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Goods list', d:'List at least 5 goods needed for a school cake stall.'},
+    {t:'Services list', d:'List at least 5 services (jobs people must do).'},
+    {t:'Resources check', d:'Tag each item N, H or C (natural, human, capital).'},
+    {t:'Share', d:'Which item did most people forget? Why do services get overlooked?'}
+  ]},
+    {k:'img', src:'baked-goods.jpg', cap:'Baked goods are tangible — but getting them to the stall takes services too.'}],
+  right:[{k:'exit', items:['distinguish goods from services','identify goods and services for a real scenario','link goods and services to types of resources','explain why both are needed at a fundraiser']}],
+  notes:`<h4>Bridge to assessment</h4><p>Hot choc / iceblocks / pancakes stall uses identical thinking — goods, services, resources, limited budget.</p>
+  <h4>Share-out</h4><p>Which service did most pairs forget? (Often <b>food safety / supervision</b> — human resource.)</p>
+  <h4>Stat talk</h4><p>ABS HES 2015–16: household services &amp; operation averaged <b>$45/week</b> — services are a major household cost alongside goods.</p>` });
+
+/* ===================== PHASE 2 ======================== */
+SLIDES.push({ type:'divider', nav:'Phase 2 — Factors & Community Decisions',
+  eyebrow:'Phase 2 · Weeks 3–5',
+  title:'Factors & Community Decisions',
+  goals:[
+    'Identify six types of factors that influence consumer choices',
+    'Read graphs and data to support consumer decisions (Source 1)',
+    'Analyse community options for using resources (Limes State School)',
+    'Understand cause and effect, sustainability and consumer responsibility'
+  ],
+  notes:`<p>Phase 2 · Weeks 3–5. Part A skills: factors, graphs, community data, sustainability.</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): total seasonally adjusted household spending ~<b>$69.7 billion/month</b>. Consumer choices at scale — not just personal taste.</p>
+  <h4>Assessment map</h4><p>Part A Q1–2 = factors from Source 1 graphs + two others at the fete.</p>` });
+
+/* ===== LESSON 5 ===== */
+SLIDES.push({ nav:'L5A — What pushes you to buy?',
+  eyebrow:'Week 3 · Lesson 5 · Learn / Read / Notice', eyebrowR:'Lesson 5 · Screen A',
+  title:'What pushes you to buy?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'Six invisible forces', body:[
+    'You think you chose freely — but <b>six types of factors</b> shape almost every purchase:',
+    '<b>Personal</b> — your likes and dislikes. <b>Social</b> — trends, what friends buy. <b>Economic</b> — your budget and price. <b>Psychological</b> — advertising and persuasion. <b>Cultural</b> — background, food, traditions. <b>Environmental</b> — sustainability, eco-friendly choices.',
+    'Smart consumers notice <b>which factor is talking loudest</b> before they decide.'
+  ], notice:'Part A asks you to identify factors — name the type AND explain how it influences the choice.'},
+    {k:'img', src:'factors-wheel.png', diagram:true, cap:'Six types of factors that influence every consumer choice.'}],
+  right:[{k:'hook', q:'You see an ad: "LIMITED EDITION — only 3 left!" Which factor is the company targeting?'},
+    {k:'wp', list:[
+      {t:'consumer choice',d:'how people decide what to purchase'},{t:'personal',d:'individual likes/dislikes'},
+      {t:'economic',d:'budget, price, affordability'},{t:'psychological',d:'advertising, persuasion'},
+      {t:'cultural',d:'background shapes what you buy'},{t:'environmental',d:'eco impact influences choice'}
+    ]},
+    {k:'brain', q:[
+      'Why do companies spend millions on ads if products are already good?',
+      'Can the same purchase be influenced by more than one factor at once?',
+      'Which factor matters most when choosing lunch — personal taste or economic budget?'
+    ]}],
+  notes:`<h4>Factors wheel</h4><p>Display six-factor diagram. Students tag a recent purchase with 2+ factor types.</p>
+  <h4>Real data</h4><p>IAB Australia / PwC (2024): internet advertising in Australia reached <b>$16.4 billion</b> — companies invest heavily in the <b>psychological</b> factor (ads, urgency, social proof).</p>
+  <h4>Hook answer</h4><p>"LIMITED EDITION — 3 left!" targets <b>psychological</b> (scarcity/fear of missing out) and often <b>social</b> (everyone wants one).</p>
+  <h4>Part A language</h4><p>Insist on factor <b>type + effect</b>, not just naming "advertising."</p>` });
+
+SLIDES.push({ nav:'L5B — Factor detectives',
+  eyebrow:'Week 3 · Lesson 5 · Practise / Analyse / Share', eyebrowR:'Lesson 5 · Screen B',
+  title:'Factor detectives',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Pick 3 purchases', d:'Something you bought or wanted recently.'},
+    {t:'Tag the factors', d:'Which of the 6 types influenced each choice? More than one?'},
+    {t:'Hardest to spot', d:'Which factor is easiest to miss? (Often psychological — ads!)'},
+    {t:'Fundraiser preview', d:'At a school fete, what factors might influence what people buy?'}
+  ]}],
+  right:[{k:'html', html:`<div class="card cream"><span class="tag try">ASSESSMENT PREVIEW</span>
+    <p>Part A Q1–2 asks for factors from <b>graphs</b> plus <b>two other</b> factors at the fundraising event. Practise naming the type AND the effect.</p></p>Task: A family decides to take a holiday next year. Discuss and make a list of all the factors they will need to consider when making a decision about where and when to go.</p></p>Task: A family has won a $50 000 house renovation. Discuss and make a list of all the factors they will need to consider when making a decision about what to spend the money on.</p></div>`},
+    {k:'exit', items:['name the six types of influencing factors','give an example of each factor','explain how a factor changes a consumer choice','link factors to the fundraiser scenario']}],
+  notes:`<h4>Assessment link</h4><p>Explicit Part A Q1–2 rehearsal. Two factors from graphs + two others at the fundraiser.</p>
+  <h4>Activity</h4><p>Three purchases on mini-whiteboards — tag factors. Share "hardest to spot" (usually psychological).</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): spending on <b>clothing and footwear</b> rose <b>4.3%</b> through the year — social and personal factors visible in real data trends.</p>` });
+
+/* ===== LESSON 6 ===== */
+SLIDES.push({ nav:'L6A — The dusty grass at Limes',
+  eyebrow:'Week 3 · Lesson 6 · Learn / Read / Notice', eyebrowR:'Lesson 6 · Screen A',
+  title:'The dusty grass at Limes State School',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'One patch of land, three futures', body:[
+    '<b>Limes State School</b> has a large grassed area — too hot and dusty to use. The community must decide how to develop this <b>natural resource</b> for <b>present and future</b> generations.',
+    'Three options: a <b>handball court</b>, a <b>frog pond</b> with native plants, or a <b>vegetable garden</b>. Survey data shows the community wants minimal water use (~350 people), native trees (~300), and larger play areas (~250) — but only one option can win.',
+    'This is <b>resource allocation</b> in action: limited land, unlimited ideas, one decision.'
+  ], notice:'Communities must weigh present needs against future needs — and use data to decide.'},
+    {k:'imgrow', items:[
+      {src:'handball-court.jpeg', alt:'Handball courts'},{src:'frog-pond.jpeg', alt:'Frog pond'},
+      {src:'vegetable-garden.jpeg', alt:'Veggie garden'}]}],
+  right:[{k:'hook', q:'If you were principal, which option would you pick — and whose voice would you worry about leaving out?'},
+    {k:'wp', list:[
+      {t:'resource allocation',d:'assigning limited resources'},{t:'present needs',d:'what the community needs now'},
+      {t:'future needs',d:'what later generations will need'},{t:'alternative',d:'a different option considered'},
+      {t:'advantage',d:'a benefit of an option'},{t:'disadvantage',d:'a drawback of an option'}
+    ]},
+    {k:'brain', q:[
+      'Why might "uses minimal water" rank highest in a drought-prone area?',
+      'Can an option be good for the present but bad for the future?',
+      'How is choosing land use like choosing a product for the fundraiser?'
+    ]}],
+  notes:`<h4>Limes scenario</h4><p>Introduce the land decision on this slide. Students complete the <b>Finite resources</b> worksheet in L6B (next screen).</p>
+  <h4>Data on slide</h4><p>Survey bars: minimal water ~350, native trees ~300, larger play ~250, basketball ~50. Ask students to calculate gaps.</p>
+  <h4>Real context</h4><p>Queensland drought cycles make "uses minimal water" a credible top priority — link to environmental + economic factors.</p>
+  <h4>Transfer</h4><p>Same structure as Part B: compare options → justify with evidence.</p>` });
+
+SLIDES.push({ nav:'L6B — Decide for Limes',
+  eyebrow:'Week 3 · Lesson 6 · Practise / Decide / Justify', eyebrowR:'Lesson 6 · Screen B',
+  title:'Decide for Limes State School',
+  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Open worksheet', d:'Complete the <b>Finite resources</b> worksheet — read the data, compare options, recommend.'},
+    {t:'Check the chart', d:'Use the Limes bar chart on this slide or in the worksheet. Top 3 priorities? Biggest gap?'},
+    {t:'Justify', d:'Which option best satisfies present + future needs? Write 3–4 sentences with reasons.'},
+    {t:'Share', d:'Compare recommendations — did everyone pick the same option? Why or why not?'}
+  ]},
+    {k:'img', src:'limes-bar-chart.png', diagram:true, cap:'Limes State School community survey — read the bars before you decide.'}],
+  right:[{k:'html', html:`<div class="card dark"><h4 style="margin-bottom:8px">Data snapshot</h4>
+    <p style="color:var(--ink);font-size:14.5px;line-height:1.5">Most wanted: <b>minimal water</b> (~350) · <b>native trees</b> (~300) · <b>larger play area</b> (~250)<br>
+    Least: basketball area (~50)<br><br>Gap minimal water vs basketball: ~300 people difference</p></div>`},
+    {k:'exit', items:['interpret community survey data','compare options using advantages and disadvantages','consider present and future needs','justify a recommendation with evidence']}],
+  notes:`<h4>Finite resources worksheet</h4><p>This is the <b>only</b> lesson where students complete the Limes land worksheet. L6A introduced the scenario.</p>
+  <h4>Marking rehearsal</h4><p>A strong answer names the data ("350 people chose…"), compares at least two options, and states a clear recommendation.</p>
+  <h4>Extension</h4><p>Can one option satisfy top three survey priorities at once? (Forces creative thinking about hybrid designs.)</p>` });
+
+/* ===== LESSON 7 — WEEK 4 ===== */
+SLIDES.push({ nav:'L7A — What do the graphs tell us?', assessTab:'source1',
+  eyebrow:'Week 4 · Lesson 7 · Learn / Read / Notice', eyebrowR:'Lesson 7 · Screen A',
+  title:'What do the graphs tell us?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'Data before decisions', body:[
+    'Communities collect <b>data</b> before they decide — survey results, bar charts, sales figures. At the Limes State School fundraiser, <b>Source 1</b> (in 📋 Assessment) shows what influences people\'s choices: who attends, when the fete runs, and how cold it is in June.',
+    'Part A Q1 asks you to identify <b>two factors from the graphs</b>. That means reading the graph carefully: What is being measured? What is the highest bar? What pattern do you see? Then name the factor type (economic, social, personal…) and explain <b>how</b> it would influence a consumer at the fete.',
+    'A graph without your explanation is just lines and numbers. <b>You</b> turn it into evidence. Press <b>📋 Assessment</b> (or <b>A</b>) and open the <b>Source 1</b> tab.'
+  ], notice:'Open Assessment → Source 1 · read graphs → name the factor → explain how it affects choice.'},
+    {k:'img', src:'assessment-media/source-1.png', diagram:true, cap:'Source 1 — fete flyer, who attends, and average temperatures in Limes.'}],
+  right:[{k:'hook', q:'A graph shows iceblock sales drop to almost zero in winter. What factor does that show — and how does it help the Year 5 class decide?'},
+    {k:'wp', list:[
+      {t:'data',d:'information collected and organised'},{t:'interpret',d:'explain what data means'},
+      {t:'pattern',d:'a trend you can see in data'},{t:'Source 1',d:'graphs for the assessment'},
+      {t:'evidence',d:'proof that supports your answer'},{t:'significance',d:'why the data matters'}
+    ]},
+    {k:'brain', q:[
+      'Can a graph mislead you if you only read the title and not the numbers?',
+      'If two bars are close in height, does that mean the community is divided?',
+      'Why would organisers collect data BEFORE choosing a fundraiser product?'
+    ]}],
+  notes:`<h4>Source 1</h4><p>Open 📋 Assessment → Source 1 tab. Model aloud: "The tallest bar is… This suggests an <b>economic</b> factor because…"</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): spending on <b>recreation and culture</b> rose <b>1.7%</b> through the year — fete timing and weather can shift categories just like iceblock sales in winter.</p>
+  <h4>Common error</h4><p>Students describe the graph but forget to name the <b>factor type</b> and <b>effect on buyers</b>.</p>` });
+
+SLIDES.push({ nav:'L7B — Graph detectives', assessTab:'source1',
+  eyebrow:'Week 4 · Lesson 7 · Practise / Analyse / Share', eyebrowR:'Lesson 7 · Screen B',
+  title:'Graph detectives (Part A prep)',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this — Source 1 practice', rows:[
+    {t:'Open Source 1', d:'📋 Assessment → Source 1 tab (opens automatically from this slide).'},
+    {t:'Describe it', d:'What does the pie chart show? What do the temperature bars tell you? Use numbers.'},
+    {t:'Name 2 factors', d:'From the graphs — type + how it influences buyers at the fete.'},
+    {t:'Add 2 more', d:'Factors NOT on the graphs (Part A Q2 practice).'}
+  ]}],
+  right:[{k:'html', html:`<div class="card cream"><span class="tag try">PART A SENTENCE STARTERS</span>
+    <p style="margin-top:8px">• "The graph shows that ___ which is an <b>economic</b> factor because…"</p>
+    <p>• "Another factor is <b>social</b> — people might buy ___ because…"</p>
+    <p style="color:#4a5a54;font-size:13px;margin-top:8px">Q1 = from graphs · Q2 = two other factors</p></div>`},
+    {k:'exit', items:['read and interpret graph data','identify factors shown in graphs','explain how factors influence consumer choices','distinguish graph factors from other factors']}],
+  notes:`<h4>Part A rehearsal</h4><p>Direct Q1–2 practice. Pair-share before writing in booklet.</p>
+  <h4>Sentence frames</h4><p>Use slide starters — then ban them: students rewrite in own words.</p>
+  <h4>Check</h4><p>Q1 factors must come <b>from the graph</b>. Q2 factors must <b>not</b> duplicate the graph — climate, volunteers, taste, etc.</p>` });
+
+/* ===== LESSON 8 — WEEK 4 ===== */
+SLIDES.push({ nav:'L8A — The Lorax & the last tree',
+  eyebrow:'Week 4 · Lesson 8 · Learn / Read / Notice', eyebrowR:'Lesson 8 · Screen A',
+  title:'The Lorax, the last tree, and you',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'When wants consume everything', body:[
+    'In <i>The Lorax</i>, the Once-ler keeps producing Thneeds because consumers keep buying. Short-term <b>wants</b> destroy the <b>Truffula trees</b> — a natural resource gone forever. The Lorax speaks for the trees; the Once-ler speaks for profit. Who was the consumer? Who paid the price?',
+    'This is <b>cause and effect</b> on a community scale: unlimited wants + no plan for <b>sustainable use of resources</b> = disaster. As consumers we have <b>roles, rights and responsibilities</b> — including thinking about what happens after we buy.',
+    'The <b>environmental factor</b> is not optional. Products that harm the environment may — and should — change what we choose.'
+  ], notice:'Every purchase sends a message about what kind of future you want.'},
+    {k:'img', src:'lorax-trees.jpeg', cap:'Truffula trees — a natural resource destroyed by unlimited consumer wants.'}],
+  right:[{k:'hook', q:'If everyone stopped buying Thneeds on day one, would the trees have been saved? Who had the power?'},
+    {k:'wp', list:[
+      {t:'sustainable use',d:'using resources without harming the future'},{t:'cause and effect',d:'actions lead to consequences'},
+      {t:'consumerism',d:'culture of buying more and more'},{t:'responsibility',d:'duty to think about effects'},
+      {t:'environmental factor',d:'eco impact shapes choices'},{t:'interconnections',d:'systems affect each other'}
+    ]},
+    {k:'brain', q:[
+      'Is "I didn\'t make it, I just bought it" a fair excuse for the Once-ler\'s customers?',
+      'Can you think of a modern "Thneed" — something popular but bad for the environment?',
+      'How could Limes State School make the fete more sustainable?'
+    ]}],
+  notes:`<h4>Lorax clip</h4><p>Unit plan YouTube link. Pause at: last tree, Once-ler's defence, Lorax leaving.</p>
+  <h4>Discuss</h4><p>Who is the consumer? Who bears the cost? Short-term profit vs long-term resource loss.</p>
+  <h4>Real context</h4><p>ABS Environmental Accounts track natural capital — Australia manages vast land and water resources; consumer demand drives how they are used (link to <b>environmental factor</b>).</p>
+  <h4>Modern Thneed</h4><p>Fast fashion, single-use packaging, cheap gadgets with short life — students generate examples.</p>` });
+
+SLIDES.push({ nav:'L8B — Responsible consumers',
+  eyebrow:'Week 4 · Lesson 8 · Practise / Reflect / Share', eyebrowR:'Lesson 8 · Screen B',
+  title:'What makes a responsible consumer?',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Lorax link', d:'Name one cause and one effect from the story.'},
+    {t:'Modern example', d:'Find a product where the environmental factor should matter. Would you still buy it?'},
+    {t:'Fete pledge', d:'One rule for a sustainable school fundraiser (less waste, local goods, bamboo cutlery…).'},
+    {t:'Share', d:'Post your pledge — can the class agree on three fete rules?'}
+  ]},
+    {k:'img', src:'sustainable-fete.png', cap:'Bamboo cutlery at the fete — reuse instead of single-use plastic.'}],
+  right:[{k:'html', html:`<div class="card dark"><h4 style="margin-bottom:8px">HASS concepts in action</h4>
+    <p style="color:var(--ink);font-size:14.5px;line-height:1.55"><b>Cause &amp; effect</b> · buying → resource loss<br>
+    <b>Roles, rights &amp; responsibilities</b> · consumers choose consequences<br>
+    <b>Interconnections</b> · economy ↔ environment<br>
+    <b>Perspectives</b> · Once-ler vs Lorax vs buyer</p></div>`},
+    {k:'exit', items:['explain cause and effect of consumer choices','describe sustainable use of resources','identify environmental factors in decisions','connect consumer responsibility to community actions']}],
+  notes:`<h4>Sustainable fete slide</h4><p>Image below steps on left — discuss one sustainable fete rule (bamboo cutlery, less packaging, local suppliers).</p>
+  <h4>Real data</h4><p>National Waste Report 2022 (DCCEEW): Australia generated <b>75.8 million tonnes</b> of core waste in 2020–21 — event choices (bamboo cutlery vs single-use plastic) are a small but teachable part of consumer responsibility.</p>
+  <h4>HASS concepts</h4><p>Name appendix terms: cause &amp; effect, roles/rights/responsibilities, interconnections, perspectives.</p>
+  <h4>Output</h4><p>Class agrees on three fete sustainability rules — post for Part B elaboration later.</p>` });
+
+/* ===== LESSON 9 ===== */
+SLIDES.push({ nav:'L9A — Choices have consequences',
+  eyebrow:'Week 5 · Lesson 9 · Learn / Read / Notice', eyebrowR:'Lesson 9 · Screen A',
+  title:'Every choice has a consequence',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'The decision-making steps', body:[
+    'Good decisions follow steps: <b>identify the problem</b> → <b>list options</b> → <b>gather information</b> → <b>weigh advantages and disadvantages</b> → <b>decide</b> → <b>reflect</b>.',
+    'Last week you saw what happens when consumers skip the "reflect" step — in <i>The Lorax</i>, short-term wants destroyed a natural resource. Every step matters.',
+    'When resources are <b>scarce</b>, choosing one thing means <b>giving up</b> another — economists call this <b>opportunity cost</b> (even if the word is not in your glossary, the idea is!).'
+  ], notice:'Decisions have intended AND unintended consequences — for you and your community.'}],
+  right:[{k:'hook', q:'Have you ever bought something and regretted it a week later? What step in decision-making did you skip?'},
+    {k:'wp', list:[
+      {t:'cause and effect',d:'actions lead to consequences'},{t:'decision',d:'choosing between alternatives'},
+      {t:'consequence',d:'what happens because of a choice'},{t:'opportunity cost',d:'what you give up when you choose'},
+      {t:'unlimited wants',d:'desires with no end'},{t:'reflect',d:'think back on what worked'}
+    ]},
+    {k:'brain', q:[
+      'Which decision-making step did the Once-ler skip? (Connect to Lorax from Week 4.)',
+      'Can a good decision for you be a bad decision for someone else?',
+      'What is something your school chose that had an unexpected consequence?'
+    ]}],
+  notes:`<h4>Connect Week 4</h4><p>Recall Lorax — formalise decision steps before cinema/MP3 scenarios.</p>
+  <h4>Opportunity cost</h4><p>Even if not in glossary, Year 5 can grasp: choosing A means not choosing B.</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): <b>non-discretionary</b> spending fell 0.4% month-on-month while <b>discretionary</b> rose 0.2% — households still trade wants against essentials in real time.</p>` });
+
+SLIDES.push({ nav:'L9B — Map a decision',
+  eyebrow:'Week 5 · Lesson 9 · Practise / Map / Share', eyebrowR:'Lesson 9 · Screen B',
+  title:'Map a decision you made',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Pick a real choice', d:'Something you bought or chose recently.'},
+    {t:'Map the steps', d:'Which steps did you actually follow? Which did you skip?'},
+    {t:'Cause → effect', d:'What happened because of your choice? Any surprise effects?'},
+    {t:'Improve it', d:'What would you do differently using all the steps?'}
+  ]},
+    {k:'img', src:'kids-bike.jpg', cap:'A new bike is a real decision — map the steps you used (or skipped) before buying.'}],
+  right:[{k:'exit', items:['describe steps in decision-making','explain cause and effect of a consumer choice','connect scarcity to the need to choose','reflect on consequences of decisions']}],
+  notes:`<h4>Discussion</h4><p>Share decision maps. Celebrate honest "I skipped research" reflections.</p>
+  <h4>Prompt</h4><p>Map a regretted purchase — which step was missing? (<b>Reflect</b> is often skipped.)</p>
+  <h4>Online class</h4><p>Students post maps on shared board; comment with one cause → one effect chain.</p>` });
+
+/* ===== LESSON 10 ===== */
+SLIDES.push({ nav:'L10A — Budget for the movies',
+  eyebrow:'Week 5 · Lesson 10 · Learn / Read / Notice', eyebrowR:'Lesson 10 · Screen A',
+  title:'Can you afford the movies?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'The cinema budget challenge', body:[
+    'You have <b>$50</b> for a cinema trip with friends. Ticket: $18. Popcorn: $12. Drink: $6. Transport: $8 return. That is <b>$44</b> — but you also wanted snacks later ($10) and a game download ($15).',
+    '<b>Strategies for informed choices</b> help here: make a <b>budget</b> (economic factor), <b>prioritise needs over wants</b>, use a <b>decision-making matrix</b>, compare <b>alternatives</b> (stream at home? matinee discount?), and <b>sleep on it</b> before spending.',
+    'A budget is not boring — it is freedom. It tells you exactly what you CAN afford before you decide.'
+  ], notice:'Economic factors + decision strategies stop impulse buys you regret.'},
+    {k:'img', src:'cinema.jpeg', cap:'Tickets, popcorn, drinks — add it up before you go. Can your budget cover it all?'}],
+  right:[{k:'hook', q:'Your friend says "just put it on Afterpay." Is that a strategy or a trap?'},
+    {k:'wp', list:[
+      {t:'budget',d:'plan for how much you can spend'},{t:'prioritise',d:'rank by importance'},
+      {t:'decision-making matrix',d:'table comparing options against criteria'},{t:'alternative',d:'another option to consider'},
+      {t:'purchase decision',d:'choosing whether to buy'},{t:'informed choice',d:'decision based on good information'}
+    ]},
+    {k:'brain', q:[
+      'Why do cinemas charge so much for popcorn? Which factors are at work?',
+      'If you halved your budget to $25, what would you cut first — and why?',
+      'Is "waiting 24 hours before buying" a useful strategy for everyone?'
+    ]}],
+  notes:`<h4>Cinema worksheet</h4><p>Introduce the budget challenge here. Students complete the <b>Cinema budget</b> worksheet in L10B (next screen).</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): <b>recreation and culture</b> spending up <b>1.7%</b> through the year; cinemas are a discretionary spend — budgets matter.</p>
+  <h4>Discuss Afterpay</h4><p>Deferred payment is not extra money — economic factor + consequence if you cannot repay.</p>
+  <h4>Popcorn pricing</h4><p>Cinemas often earn more from concessions than tickets — psychological + economic factors.</p>` });
+
+SLIDES.push({ nav:'L10B — Cinema budget challenge',
+  eyebrow:'Week 5 · Lesson 10 · Practise / Budget / Share', eyebrowR:'Lesson 10 · Screen B',
+  title:'Plan your cinema trip',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'Open worksheet', d:'Complete the <b>Cinema budget activity</b> worksheet.'},
+    {t:'Apply 2 strategies', d:'e.g. prioritise needs, find a cheaper alternative, use a matrix.'},
+    {t:'Decide & explain', d:'Can you afford it? What did you cut or change?'},
+    {t:'Share', d:'Which strategy helped most? Link to Part A Q4–5 language.'}
+  ]},
+    {k:'img', src:'cinema-city.jpg', cap:'A night at the movies — list every cost before you go. Can your budget cover it all?'}],
+  right:[{k:'html', html:`<div class="card cream"><span class="tag try">STRATEGY BANK</span>
+    <div class="bank"><span>budget</span><span>prioritise needs/wants</span><span>decision matrix</span><span>compare alternatives</span><span>research prices</span><span>wait 24 hours</span></div>
+    <p style="margin-top:10px;color:#4a5a54;font-size:14px">Part A Q4–5: identify 2 strategies + explain how each helps. Practise here!</p></div>`},
+    {k:'exit', items:['use a budget to plan spending','apply at least two decision-making strategies','explain how each strategy helps','make an informed purchase decision']}],
+  notes:`<h4>Assessment link</h4><p>Part A Q4–5: two strategies + how each helps. Strategy bank on slide — insist on explanation, not just naming.</p>
+  <h4>Examples</h4><p>"Prioritise needs" → cut game download to afford transport. "Compare alternatives" → stream at home vs cinema.</p>
+  <h4>Marking tip</h4><p>Credit specific examples tied to the cinema scenario.</p>` });
+
+/* ===================== PHASE 3 ======================== */
+SLIDES.push({ type:'divider', nav:'Phase 3 — Strategies, TEEL & Assessment',
+  eyebrow:'Phase 3 · Weeks 6–8',
+  title:'Strategies, TEEL & Assessment',
+  goals:[
+    'Use decision-making matrices to compare product options',
+    'Write TEEL paragraphs to explain and justify consumer decisions',
+    'Apply budgeting and comparison skills to real scenarios',
+    'Succeed in Part A (Week 7) and Part B (Week 8)'
+  ],
+  notes:`<p>Phase 3 · Weeks 6–8. Matrices, TEEL, scenarios, Part A (Week 7) and Part B (Week 8).</p>
+  <h4>Pacing</h4><p>Do not rush L11–12 — TEEL quality drives Part B grades.</p>
+  <h4>Real data (ABS)</h4><p>Communication spending averaged <b>$47/week</b> per household in 2015–16 (ABS HES) — technology purchases (cameras, MP3 players) sit in household capital/communication budgets.</p>` });
+
+/* ===== LESSON 11 ===== */
+SLIDES.push({ nav:'L11A — Which camera should we buy?',
+  eyebrow:'Week 6 · Lesson 11 · Learn / Read / Notice', eyebrowR:'Lesson 11 · Screen A',
+  title:'Which camera should we buy?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'Compare before you commit', body:[
+    'The school media club needs a new camera. Option A: cheap, small, poor in low light. Option B: mid-price, good all-rounder. Option C: expensive, professional quality — but blows the budget.',
+    'A <b>decision-making matrix</b> compares options against <b>criteria</b> that matter: price, quality, ease of use, warranty. Score each option, add up, and the best fit becomes clear — but only if you chose the right criteria first!',
+    'This is exactly how communities decide between handball courts, frog ponds and vegetable gardens — and how Year 5 will choose a fundraiser product.'
+  ], notice:'A matrix turns a messy decision into clear, comparable data.'},
+    {k:'img', src:'cameras.jpeg', cap:'Three cameras, three price points — which criteria matter most to the media club?'}],
+  right:[{k:'hook', q:'If "looks cool" is your only criterion, which camera wins? Is that a good way to decide?'},
+    {k:'wp', list:[
+      {t:'criteria',d:'standards used to judge options'},{t:'decision-making matrix',d:'table comparing alternatives'},
+      {t:'compare',d:'examine similarities and differences'},{t:'evaluate',d:'judge the value of each option'},
+      {t:'best choice',d:'the option that best meets the criteria'},{t:'justify',d:'give reasons for your choice'}
+    ]},
+    {k:'brain', q:[
+      'Who should decide the criteria — the teacher, the students, or the person paying?',
+      'Can the "cheapest" option end up costing more in the long run?',
+      'What criteria would matter most for a school fundraiser product?'
+    ]}],
+  notes:`<h4>Camera scenario</h4><p>Build matrix on screen as a class (unit plan Week 6). Criteria first — then scores.</p>
+  <h4>Discuss</h4><p>"Looks cool" as sole criterion → usually the expensive option wins. Is that wise?</p>
+  <h4>Transfer</h4><p>Same matrix logic as Limes land choice and fundraiser product (Part B).</p>
+  <h4>Real talk</h4><p>Cheapest upfront cost can mean higher long-term cost (repairs, poor quality) — economic factor over time.</p>` });
+
+SLIDES.push({ nav:'L11B — Build your matrix',
+  eyebrow:'Week 6 · Lesson 11 · Practise / Compare / Decide', eyebrowR:'Lesson 11 · Screen B',
+  title:'Build a decision matrix',
+  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  left:[{k:'steps', label:'Do this — camera or MP3 preview', rows:[
+    {t:'Choose criteria', d:'At least 4: e.g. price, quality, ease of use, popularity.'},
+    {t:'Score options', d:'Rate each option 1–5 for each criterion.'},
+    {t:'Total & decide', d:'Which wins? Does it match your gut feeling?'},
+    {t:'Justify', d:'Write 2 sentences: "We chose ___ because ___."'}
+  ]},
+    {k:'html', html:`<div class="card cream"><span class="tag try">YOUR MATRIX</span>
+    <table class="dt" style="margin-top:10px"><tr><th>Criteria</th><th>Opt A</th><th>Opt B</th><th>Opt C</th></tr>
+    <tr><td>Price</td><td></td><td></td><td></td></tr>
+    <tr><td>Quality</td><td></td><td></td><td></td></tr>
+    <tr><td>Ease of use</td><td></td><td></td><td></td></tr>
+    <tr><td><b>Total</b></td><td></td><td></td><td></td></tr></table></div>`}],
+  right:[{k:'img', src:'decision-matrix.png', diagram:true, cap:'A decision matrix compares options against the criteria that matter.'},
+    {k:'exit', items:['build a decision-making matrix','compare options using criteria','make a justified choice','explain how the matrix helped']}],
+  notes:`<h4>Matrix practice</h4><p>Camera matrix on slide only — no MP3 worksheet yet (that comes in L13B).</p>
+  <h4>Common gap</h4><p>Criteria chosen after they already picked a favourite — discuss criteria-first discipline.</p>
+  <h4>Next lesson</h4><p>MP3 + picnic scenarios — more independent.</p>` });
+
+/* ===== LESSON 12 ===== */
+SLIDES.push({ nav:'L12A — Write like a HASS expert',
+  eyebrow:'Week 6 · Lesson 12 · Learn / Read / Notice', eyebrowR:'Lesson 12 · Screen A',
+  title:'Write like a HASS expert (TEEL)',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'TEEL — the paragraph that persuades', body:[
+    'Part B asks you to <b>explain your decision</b> in writing. Use <b>TEEL</b>:',
+    '<b>T</b>opic sentence — state your decision clearly. <b>E</b>xplain — what strategies did you use? <b>E</b>laborate — what factors informed your choice? Pros and cons? Why NOT the other options? <b>L</b>ink — restate your decision and why.',
+    'A TEEL paragraph is not fluff — it is proof that you thought like a consumer economist.'
+  ], notice:'Part B Q2 uses TEEL. Master it here, use it in the assessment.'},
+    {k:'img', src:'teel-writing.jpeg', cap:'TEEL gives your paragraph a clear structure — Topic, Explain, Elaborate, Link.'}],
+  right:[{k:'hook', q:'Which is stronger: "I picked hot chocolate because it is nice" or "I picked hot chocolate because…"? Finish the second one.'},
+    {k:'wp', list:[
+      {t:'topic sentence',d:'states your main point'},{t:'explain',d:'how you decided'},
+      {t:'elaborate',d:'details, evidence, pros/cons'},{t:'link',d:'restates and concludes'},
+      {t:'discipline-specific terms',d:'HASS vocabulary from the unit'},{t:'conventions',d:'correct paragraph structure'}
+    ]},
+    {k:'brain', q:[
+      'Why is "because" the most important word in a HASS paragraph?',
+      'Can you have a strong topic sentence that is wrong?',
+      'What HASS words from this unit should appear in Part B?'
+    ]}],
+  notes:`<h4>Model TEEL</h4><p>Write together on camera or Limes decision. Colour-code T-E-E-L in margins.</p>
+  <h4>Weak vs strong</h4><p>Weak: "I picked hot chocolate because it's nice." Strong: names strategies, factors, and rejected options.</p>
+  <h4>Part B criteria</h4><p>Decision (Q1) + TEEL paragraph (Q2) with glossary terms and conventions.</p>
+  <h4>Time</h4><p>Allow 15 min modelling + 10 min student attempt on mini-topic before L12B frame.</p>` });
+
+SLIDES.push({ nav:'L12B — TEEL practise',
+  eyebrow:'Week 6 · Lesson 12 · Practise / Write / Share', eyebrowR:'Lesson 12 · Screen B',
+  title:'Write your first TEEL paragraph',
+  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  left:[{k:'html', html:`<div class="card cream"><span class="tag try">TEEL FRAME — Part B format</span>
+    <table class="dt"><tr><th>Part</th><th>Prompt</th><th>Your writing</th></tr>
+    <tr><td><b>T.S.</b></td><td>What product should the school sell?</td><td style="height:28px"></td></tr>
+    <tr><td><b>Explain</b></td><td>What strategies did you use?</td><td style="height:28px"></td></tr>
+    <tr><td><b>Elaborate</b></td><td>Factors, pros/cons, why not the others?</td><td style="height:40px"></td></tr>
+    <tr><td><b>Link</b></td><td>Restate decision and why</td><td style="height:28px"></td></tr></table></div>`}],
+  right:[{k:'steps', label:'Do this', rows:[
+    {t:'Pick a scenario', d:'Camera choice, Limes land, or fundraiser product (preview).'},{t:'Draft TEEL', d:'Use the frame. At least 3 HASS terms.'},{t:'Peer check', d:'Can your partner label T, E, E, L in your paragraph?'}]},
+    {k:'exit', items:['structure a paragraph using TEEL','use HASS vocabulary correctly','explain strategies and factors in writing','link back to my main decision']}],
+  notes:`<h4>Peer review</h4><p>Partners highlight T-E-E-L in different colours.</p>
+  <h4>Common gap</h4><p>Weak <b>Elaborate</b> — no pros/cons, no "why not the others."</p>
+  <h4>Checklist</h4><p>At least 3 glossary terms: consumer, resource allocation, factors, strategies, etc.</p>
+  <h4>Support</h4><p>Sentence starters OK for draft — final Part B must be in student's own words.</p>` });
+
+/* ===== LESSON 13 ===== */
+SLIDES.push({ nav:'L13A — MP3 or picnic?',
+  eyebrow:'Week 7 · Lesson 13 · Learn / Read / Notice', eyebrowR:'Lesson 13 · Screen A',
+  title:'MP3 player or picnic budget?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'Two decisions, same skills', body:[
+    '<b>Decision 1 — MP3 player:</b> Apply your matrix to choose the best MP3 player. Criteria: price, storage, battery, durability. Use strategies: research, compare alternatives, prioritise needs.',
+    '<b>Decision 2 — Picnic budget:</b> Plan a class picnic for 25 people with a fixed budget. Every dollar allocated to food cannot go to games or transport. <b>Resource allocation</b> again — sound familiar?',
+    'Both scenarios train the same muscles you need for Part A and Part B: compare options, use strategies, justify with evidence.'
+  ], notice:'Practise decisions now — the assessment asks you to do this for real.'},
+    {k:'imgrow', items:[
+      {src:'mp3-player.jpeg', alt:'MP3 player', fit:true},{src:'picnic.jpeg', alt:'Picnic budget'}]}],
+  right:[{k:'hook', q:'You have $100 for a picnic OR an MP3 player — you cannot have both. What do you give up?'},
+    {k:'wp', list:[
+      {t:'compare',d:'weigh options against each other'},{t:'allocate',d:'distribute limited money'},{t:'research',d:'gather information before deciding'},{t:'prioritise',d:'rank by importance'},{t:'evidence',d:'facts that support your choice'},{t:'justify',d:'give clear reasons'}
+    ]},
+    {k:'brain', q:[
+      'Which decision is harder — MP3 for yourself or picnic for 25 people? Why?',
+      'What happens if you forget transport in the picnic budget?',
+      'How is choosing an MP3 like choosing a fundraiser product?'
+    ]}],
+  notes:`<h4>Resources</h4><p>Introduce MP3 and picnic scenarios here. Students complete both worksheets in L13B (next screen).</p>
+  <h4>Picnic maths</h4><p>25 people, fixed budget — every dollar to food cannot go to transport/games (resource allocation).</p>
+  <h4>Real data (ABS)</h4><p>ABS HES 2015–16: ~<b>34%</b> of household food spending ($80 of $237/week) was on meals out and fast food — event food is a real budget line.</p>
+  <h4>Opportunity cost</h4><p>$100 picnic OR MP3 — cannot have both. Link to assessment "one product only" rule.</p>` });
+
+SLIDES.push({ nav:'L13B — MP3 + picnic decisions',
+  eyebrow:'Week 7 · Lesson 13 · Practise / Decide / Write', eyebrowR:'Lesson 13 · Screen B',
+  title:'Make both decisions',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Do this', rows:[
+    {t:'MP3 worksheet', d:'Complete <b>Making informed decisions — MP3 player</b>.'},
+    {t:'Picnic worksheet', d:'Complete <b>Budget for a picnic at the beach</b>.'},
+    {t:'Reflection', d:'Which strategy helped most in each decision?'},
+    {t:'TEEL sentence', d:'Write ONE TEEL-quality sentence about either decision.'}
+  ]}],
+  right:[{k:'exit', items:['apply a decision matrix to choose a product','allocate a budget across categories','use strategies to make informed choices','write a sentence using HASS vocabulary']}],
+  notes:`<h4>Worksheets</h4><p>Both worksheets completed here for the first time. Part A rehearsal next lesson (L14B).</p>
+  <h4>Conference</h4><p>Check picnic budgets add to ≤ total; MP3 matrix has four criteria minimum.</p>
+  <h4>TEEL sentence</h4><p>One quality sentence only — preview Part B depth required next week.</p>` });
+
+/* ===== LESSON 14 ===== */
+SLIDES.push({ nav:'L14A — Haircut economics', assessTab:'source2',
+  eyebrow:'Week 7 · Lesson 14 · Learn / Read / Notice', eyebrowR:'Lesson 14 · Screen A',
+  title:'The $35 haircut question',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', wow:true, heading:'Services cost more than you think', body:[
+    'A haircut is a <b>service</b> — you are paying for human skill and time, not just a tangible good. Salon: $35. Barber: $20. Mum\'s kitchen scissors: free — but results vary!',
+    'Factors at play: <b>economic</b> (budget), <b>personal</b> (style preference), <b>social</b> (what friends think), <b>psychological</b> (brand of salon = "fancy").',
+    'Now connect to the <b>fundraiser</b>: Limes State School must choose ONE product — hot chocolate & coffee, iceblocks, or pancakes. Not enough resources for all three. <b>Source 2</b> (📋 Assessment) has the full comparison data. Part A practises factors and strategies; Part B is your TEEL decision.'
+  ], notice:'Part A this week. Part B next week. You have been practising for this all term.'},
+    {k:'img', src:'haircut.jpeg', cap:'A haircut is a service — you pay for skill and time, not just scissors.'}],
+  right:[{k:'hook', q:'Why does a haircut cost $35 when the scissors already exist? What are you really paying for?'},
+    {k:'wp', list:[
+      {t:'service',d:'intangible — skill and time'},{t:'human resource',d:'the hairdresser\'s labour'},{t:'Source 2',d:'data comparing fundraiser products'},{t:'profit',d:'money earned after costs'},{t:'fundraising',d:'raising money for a cause'},{t:'product option',d:'a choice of what to sell'}
+    ]},
+    {k:'brain', q:[
+      'Hot chocolate predicts $1500 profit but pancakes only $800. Should profit be the ONLY factor?',
+      'Iceblocks suit kids — but the data says it is too cold for them. How does climate factor in?',
+      'What decisions must the class make if they cannot sell all three products?'
+    ]}],
+  notes:`<h4>Haircut scenario</h4><p>Service economics on slide only — no worksheet. Pivot to Source 2 and Part A prep.</p>
+  <h4>Real data (ABS)</h4><p>Personal care averaged <b>$29/week</b> per household in 2015–16 (ABS HES) — haircuts are a small but regular service cost.</p>
+  <h4>Source 2 preview</h4><p>Hot choc $1500 profit, iceblocks $840, pancakes $800 — profit alone is not enough to decide.</p>
+  <h4>Discuss</h4><p>$35 salon vs $20 barber — economic, personal, social, psychological factors all active.</p>` });
+
+SLIDES.push({ nav:'L14B — Part A rehearsal', assessTab:'source1',
+  eyebrow:'Week 7 · Lesson 14 · Practise / Rehearse / Prepare', eyebrowR:'Lesson 14 · Screen B',
+  title:'Part A rehearsal — fundraiser',
+  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  left:[{k:'steps', label:'Rehearse Part A', rows:[
+    {t:'Q1–2 Factors', d:'Name 4 factors (2 from graphs + 2 others). State the TYPE and the EFFECT.'},
+    {t:'Q3 Decisions', d:'What must the class decide about the 3 product options?'},
+    {t:'Q4–5 Strategies', d:'Name 2 strategies + explain how each helps, with an example.'},
+    {t:'Open Assessment', d:'📋 → Task tab for the full Part A questions.'}
+  ]}],
+  right:[{k:'html', html:`<div class="card dark"><h4 style="margin-bottom:8px">Need the sources?</h4>
+    <p style="color:var(--ink);font-size:14.5px;line-height:1.55;margin:0">Part A uses <b>Source 1</b> (graphs). Part B preview uses <b>Source 2</b> (product comparison). Both are in 📋 Assessment — this slide opens Source 1; L15 opens Source 2.</p>
+    <p style="margin:10px 0 0"><button type="button" class="btn assess" onclick="openOverlay('source2')">Open Source 2 ↗</button></p></div>`},
+    {k:'imgrow', items:[
+      {src:'hot-chocolate-stall.jpeg', alt:'Hot drinks'},{src:'iceblocks.jpeg', alt:'Iceblocks'},
+      {src:'pancakes.jpeg', alt:'Pancakes'}]},
+    {k:'exit', items:['identify factors that influence consumer choices','explain decision-making strategies with examples','describe decisions when resources are limited','feel ready for Part A']}],
+  notes:`<h4>Part A tomorrow</h4><p>Test conditions next session. Read Q1–5 aloud today.</p>
+  <h4>Rehearsal checklist</h4><ul>
+    <li>Q1–2: factor <b>type + effect</b> (2 from graphs, 2 others)</li>
+    <li>Q3: decisions when resources limited (cannot sell all three products)</li>
+    <li>Q4–5: two strategies + <b>how each helps</b> with examples</li></ul>
+  <h4>Source 1 reminder</h4><p>📋 Assessment → Source 1 — practise reading axes and numbers, not just titles.</p>
+  <h4>Calm nerves</h4><p>They have done L7B, L14B, and checkpoint slide — this is rehearsal, not new content.</p>` });
+
+/* ===== PART A CHECKPOINT ===== */
+SLIDES.push({ type:'checkpoint', nav:'★ Part A Assessment (Week 7)', assessTab:'task',
+  eyebrow:'Week 7 · Assessment',
+  title:'Part A — Researching options & analysing data',
+  sub:'Identify factors, describe decisions about product options, and explain strategies that help you choose. Use Source 1 and Source 2 in 📋 Assessment. Press Back any time to return here.',
+  notes:`<h4>Part A — test conditions</h4>
+  <h4>Timing</h4><p>Allow full lesson. No new teaching — invigilate, circulate, prompt "factor type?" only if stuck.</p>
+  <h4>Marking guide (in overlay)</h4><p>Credit factor type + influence; strategies with examples; clear decisions about limited resources.</p>
+  <h4>After</h4><p>Collect booklets. Debrief Q3 decisions — sets up Part B product choice.</p>` });
+
+/* ===== LESSON 15 ===== */
+SLIDES.push({ nav:'L15A — Choose the fundraiser product', assessTab:'source2',
+  eyebrow:'Week 8 · Lesson 15 · Learn / Read / Notice', eyebrowR:'Lesson 15 · Screen A',
+  title:'Which product should we sell?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'Evaluate Source 2 — then decide', body:[
+    'Open <b>Source 2</b> in 📋 Assessment (this slide opens it automatically). Compare all three product options. Do not just pick the highest profit — evaluate: <b>climate</b>, <b>taste/demand</b>, <b>price</b>, <b>resources needed</b>, <b>human capital</b> (volunteers), and <b>environmental</b> impact.',
+    'Hot chocolate & coffee: highest profit ($1500), suits cold weather, appeals to adults and kids, needs stall workers and drink makers. Iceblocks: poor fit for cold day. Pancakes: high effort, takeaway problem, most expensive for buyers.',
+    'Your <b>decision</b> must be defensible — and your <b>TEEL paragraph</b> must show HOW you decided, not just WHAT you picked.'
+  ], notice:'Assessment → Source 2 · Part B = decision + TEEL paragraph.'},
+    {k:'img', src:'assessment-media/source-2.png', diagram:true, cap:'Source 2 — prices, resources, and factors for all three product options.'}],
+  right:[{k:'hook', q:'If you were a customer at the fete — not the organiser — which would YOU buy? Does that change the "best" product to sell?'},
+    {k:'brain', q:[
+      'Can the highest-profit option be the wrong choice for the community?',
+      'What would you say to someone who picked iceblocks? How would you respect their view while disagreeing?',
+      'Which TEEL section will be hardest — Explain or Elaborate? Why?'
+    ]},
+    {k:'wp', list:[
+      {t:'evaluate',d:'judge value using evidence'},{t:'Source 2',d:'product comparison data'},{t:'TEEL',d:'Topic Explain Elaborate Link'},{t:'advantages',d:'benefits of an option'},{t:'disadvantages',d:'drawbacks of an option'},{t:'communicate',d:'present findings clearly'}
+    ]}],
+  notes:`<h4>Part B prep</h4><p>Decision today; TEEL draft on L15B; test next lesson.</p>
+  <h4>Source 2 debate</h4><p>Highest profit (hot choc $1500) vs climate fit (cold day), volunteer load, environmental waste.</p>
+  <h4>Perspective</h4><p>Organiser vs customer view — hook question on slide. Both valid; TEEL must defend one choice.</p>
+  <h4>Real data (ABS)</h4><p>ABS MHSI: spending on <b>food</b> categories shifts seasonally — fete product choice should reflect conditions, not profit alone.</p>` });
+
+SLIDES.push({ nav:'L15B — Draft your TEEL', assessTab:'source2',
+  eyebrow:'Week 8 · Lesson 15 · Practise / Write / Revise', eyebrowR:'Lesson 15 · Screen B',
+  title:'Draft your Part B paragraph',
+  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  left:[{k:'html', html:`<div class="card cream"><span class="tag try">PART B — TEEL DRAFT</span>
+    <p style="margin:8px 0"><b>Q1 decision:</b> The product the Year 5 class will sell is: _______________</p>
+    <p style="margin:8px 0"><b>T.S.</b> ________________________________________</p>
+    <p style="margin:8px 0"><b>Explain</b> (strategies): _________________________</p>
+    <p style="margin:8px 0"><b>Elaborate</b> (factors, pros/cons, alternatives): ___</p>
+    <p style="margin:8px 0"><b>Link</b> _______________________________________</p>
+    <p style="color:#4a5a54;font-size:13px;margin-top:8px">Use at least 3 glossary terms: consumer, resource allocation, factors, strategies…</p></div>`}],
+  right:[{k:'steps', label:'Checklist before Part B', rows:[
+    {t:'Decision stated', d:'Clear product choice in Q1.'},
+    {t:'TEEL complete', d:'All four parts present.'},
+    {t:'HASS terms', d:'At least 3 discipline-specific words.'},
+    {t:'Alternatives addressed', d:'Why NOT the other two products?'}
+  ]},
+    {k:'exit', items:['make a justified decision using Source 2','draft a TEEL paragraph','explain strategies and factors','address alternative product options']}],
+  notes:`<h4>Conference</h4><p>1:1 or small groups — focus on <b>Elaborate</b>: "Why not iceblocks? Why not pancakes?"</p>
+  <h4>Marking preview</h4><p>Part B needs all TEEL parts + 3+ HASS terms + alternatives addressed.</p>
+  <h4>Support writers</h4><p>Oral rehearsal before writing — students say Elaborate aloud first.</p>
+  <h4>Homework option</h4><p>Polish draft paragraph if Part B is next day.</p>` });
+
+/* ===== PART B CHECKPOINT ===== */
+SLIDES.push({ type:'checkpoint', nav:'★ Part B Assessment (Week 8)', assessTab:'source2',
+  eyebrow:'Week 8 · Assessment',
+  title:'Part B — Communicating & reflecting',
+  sub:'State your product decision and explain it in a TEEL paragraph using Source 2 (📋 Assessment). Show that choices must be made when allocating limited resources. Good luck — you have practised for this all term.',
+  notes:`<h4>Part B — test conditions</h4>
+  <h4>Q1</h4><p>Clear product decision using Source 2.</p>
+  <h4>Q2</h4><p>TEEL paragraph — strategies, factors, pros/cons, rejected options, link.</p>
+  <h4>Do not</h4><p>Coach content during test. Refer to glossary only if school policy allows.</p>
+  <h4>After</h4><p>Celebrate on L16 — unit arc complete.</p>` });
+
+/* ===== LESSON 16 ===== */
+SLIDES.push({ nav:'L16A — The fete scenario',
+  eyebrow:'Week 8 · Lesson 16 · Review / Reflect / Discuss', eyebrowR:'Lesson 16 · Screen A',
+  title:'Back to the fete — what did we learn?',
+  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  left:[{k:'read', heading:'From needs to community action', body:[
+    'You started with a simple question: need or want? You ended by helping a community decide how to allocate scarce resources at a fundraising event — using factors, strategies, data, and TEEL.',
+    'The <b>fete scenario</b> ties it together: goods and services, human and capital resources, consumer choices shaped by climate and price, and the reality that <b>you cannot have everything</b>.',
+    'That is economics. That is HASS. And whether you are buying a haircut, planning a picnic, or choosing a camera — you are thinking like an informed consumer.'
+  ], notice:'Smart consumers and communities ask questions, compare options, and justify decisions with evidence.'},
+    {k:'img', src:'school-fete.jpeg?v=3', cap:'The school fete — goods, services, choices, and community all in one place.'}],
+  right:[{k:'hook', q:'What is one decision you will make differently now — and which strategy will you use?'},
+    {k:'brain', q:[
+      'If you could add one product to the fete, what would it be and why?',
+      'How does consumer choice connect to caring for the environment (think Lorax)?',
+      'What was the most surprising thing you learned this term?'
+    ]},
+    {k:'html', html:`<div class="card dark"><h4 style="margin-bottom:8px">Unit in one breath</h4>
+    <p style="color:var(--ink);font-size:14.5px;line-height:1.65">Needs &amp; wants → limited <b>resources</b> → goods &amp; services → <b>factors</b> shape choices → <b>strategies</b> and matrices help → <b>TEEL</b> explains decisions → communities <b>allocate</b> resources together.</p></div>`}],
+  notes:`<h4>Fete consolidation</h4><p>Unit plan Week 8 Lesson 1 — revisit full scenario: goods, services, factors, limited resources.</p>
+  <h4>Real data</h4><p>School fetes are a staple Australian P&amp;C fundraiser — ABS HES shows recreation + food spending are major household categories where fete purchases compete.</p>
+  <h4>Reflect</h4><p>Unit breath on slide — students trace their own learning along the arrow chain.</p>
+  <h4>Image</h4><p>Updated school-fete photo — ask what goods/services they can spot.</p>` });
+
+SLIDES.push({ nav:'L16B — Showcase',
+  eyebrow:'Week 8 · Lesson 16 · Share / Celebrate', eyebrowR:'Lesson 16 · Screen B',
+  title:'Showcase your consumer thinking',
+  screenlbl:'Student screen 2 of 2',
+  left:[{k:'steps', label:'Share with the class', rows:[
+    {t:'Best decision', d:'Tell us a decision you made well this term — real life or in class.'},
+    {t:'Best strategy', d:'Which strategy will you keep using? (budget, matrix, TEEL…)'},
+    {t:'Best question', d:'What is one question you still wonder about consumers and communities?'}
+  ]}],
+  right:[{k:'exit', items:['explain how communities allocate limited resources','use HASS vocabulary to discuss consumer decisions','apply decision-making strategies in real life','reflect on my growth as an informed consumer']}],
+  notes:`<h4>Celebration</h4><p>Invite volunteers to share a TEEL paragraph, matrix, or real-life decision they're proud of.</p>
+  <h4>Prompts on slide</h4><p>Best decision · best strategy · unanswered question — use as talk-show format if time allows.</p>
+  <h4>Exit survey (optional)</h4><p>One thing learned · one strategy I'll use · one word for the unit.</p>` });
+
+/* ============================ APPENDIX ============================ */
+SLIDES.push({ type:'appendix-index', nav:'Appendix — Worksheets',
+  eyebrow:'Resources · Student worksheets',
+  title:'Student worksheets',
+  sub:'Open a worksheet below — use in class or complete digitally. The one for your current lesson is highlighted in blue.',
+  items:[
+    {slug:'workbook-needs-wants', title:'Categorise needs and wants', desc:'Q.1–5 — Lesson 1B only.'},
+    {slug:'workbook-needs-wants-groups', title:'Needs and wants for different groups', desc:'Lesson 2B only — compare needs across different people and communities.'},
+    {slug:'workbook-categorising-resources', title:'Categorising resources', desc:'Lesson 3B only — natural, human and capital resources.'},
+    {slug:'workbook-finite-resources', title:'Finite resources', desc:'Lesson 6B only — Limes State School land decision.'},
+    {slug:'workbook-cinema', title:'Cinema budget activity', desc:'Lesson 10B only — plan a cinema trip on a fixed budget.'},
+    {slug:'workbook-mp3', title:'Making informed decisions — MP3 player', desc:'Lesson 13B only — decision matrix practice.'},
+    {slug:'workbook-picnic', title:'Budget for a picnic at the beach', desc:'Lesson 13B only — allocate a class picnic budget.'}
+  ],
+  notes:`<h4>Worksheets</h4><p>Seven PDFs — each completed on <b>one</b> lesson screen. Blue 📄 button only appears that lesson.</p>
+  <h4>Lesson links</h4><ul>
+    <li><b>Categorise needs &amp; wants</b> Q.1–5 — L1B (slide 4)</li>
+    <li><b>Needs for different groups</b> — L2B (slide 6)</li>
+    <li><b>Categorising resources</b> — L3B (slide 8)</li>
+    <li><b>Finite resources</b> — L6B (slide 15)</li>
+    <li><b>Cinema budget</b> — L10B (slide 23)</li>
+    <li><b>MP3 + picnic</b> — L13B (slide 30)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-needs-wants', nav:'Worksheet — Needs & wants',
+  eyebrow:'Worksheet',
+  title:'Categorise needs and wants',
+  sub:'Complete Q.1–5 on L1B (slide 4) only.',
+  pdf: WORKBOOK_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Categorise needs and wants</b> — L1B only.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L1B (slide 4) — Q.1–5</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-categorising-resources', nav:'Worksheet — Categorising resources',
+  eyebrow:'Worksheet',
+  title:'Categorising resources',
+  sub:'Sort natural, human and capital resources — complete on L3B (slide 8).',
+  pdf: WORKBOOK_RESOURCES_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Categorising resources</b> — separate PDF, L3B only.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L3B (slide 8)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-needs-wants-groups', nav:'Worksheet — Needs for groups',
+  eyebrow:'Worksheet',
+  title:'Needs and wants for different groups',
+  sub:'Compare what counts as a need or want for different people — babies, workers, families, and communities. Complete on paper or digitally.',
+  pdf: WORKBOOK_NEEDS_WANTS_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Needs and wants for different groups</b> — complete on L2B only.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L2B (slide 6)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-finite-resources', nav:'Worksheet — Finite resources',
+  eyebrow:'Worksheet',
+  title:'Finite resources',
+  sub:'Limes State School must choose how to use limited land — compare options using survey data, advantages and disadvantages.',
+  pdf: WORKBOOK_FINITE_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Finite resources</b> — complete on L6B only. L6A introduces the scenario.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L6B (slide 15)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-cinema', nav:'Worksheet — Cinema budget',
+  eyebrow:'Worksheet',
+  title:'Cinema budget activity',
+  sub:'Plan a night at the movies on a fixed budget. List costs, prioritise, and explain which strategies helped you decide.',
+  pdf: WORKBOOK_CINEMA_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Cinema budget activity</b> — complete on L10B only. L10A introduces the scenario.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L10B (slide 23)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-mp3', nav:'Worksheet — MP3 decisions',
+  eyebrow:'Worksheet',
+  title:'Making informed decisions',
+  sub:'MP3 player decision matrix — complete on L13B only (with the picnic worksheet).',
+  pdf: WORKBOOK_MP3_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Making informed decisions — MP3 player</b> — L13B only.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L13B (slide 30)</li></ul>` });
+
+SLIDES.push({ type:'appendix', slug:'workbook-picnic', nav:'Worksheet — Picnic budget',
+  eyebrow:'Worksheet',
+  title:'Budget for a picnic at the beach',
+  sub:'Plan a class picnic for 25 people. Allocate your budget across food, games, and transport — every dollar can only be spent once.',
+  pdf: WORKBOOK_PICNIC_PDF,
+  notes:`<h4>Worksheet</h4><p><b>Budget for a picnic at the beach</b> — L13B only.</p>
+  <h4>Lesson links</h4><ul>
+    <li>L13B (slide 30)</li></ul>` });
+
+/* ============================ CLOSING ============================ */
+SLIDES.push({ type:'cover', nav:'Keep deciding wisely',
+  eyebrow:'HASS · Unit complete',
+  title:'Keep deciding wisely.',
+  sub:'Every dollar, every choice, every resource allocated is a chance to think clearly. Ask why. Compare options. Use evidence. You are all consumers — now be informed ones.',
+  meta:['Question','Compare','Decide','Justify','Reflect'],
+  notes:`<p>Closing screen — unit complete. Optional: screenshot class "consumer pledge" (one strategy each) for portfolio.</p>
+  <h4>Real data (ABS)</h4><p>Household final consumption expenditure is the largest component of Australian GDP — every student is already part of the economy they studied (ABS National Accounts).</p>` });
+
+
+
+/* =========================================================
+   RENDERERS
+   ========================================================= */
+function bq(arr){
+  return `<div class="brain"><div class="lbl">🧠 Brain Questions — talk it out</div>
+    <ol>${arr.map((q,i)=>`<li><span class="n">${i+1}</span><span>${q}</span></li>`).join('')}</ol></div>`;
+}
+function wordpower(list){
+  return `<div class="card dark wp"><h4>Word Power</h4><div class="wp-grid">${
+    list.map(w=>`<div class="chip"><b>${w.t}</b><span>${w.d}</span></div>`).join('')}</div></div>`;
+}
+function hook(q){ return `<div class="hook"><div class="lbl">Hook question</div><p>${q}</p></div>`; }
+function readCard(r){
+  return `<div class="card cream"><span class="tag ${r.wow?'wow':'read'}">${r.label||(r.wow?'WOW · READ':'READ')}</span>
+    <h3>${r.heading}</h3>${(r.body||[]).map(p=>`<p style="margin-bottom:10px">${p}</p>`).join('')}
+    ${r.notice?`<div class="notice"><b>Notice:</b> ${r.notice}</div>`:''}</div>`;
+}
+function exitCheck(items){
+  return `<div class="exit"><h4>Exit check — I can…</h4><div class="exit-grid">${
+    items.map(i=>`<div class="echk"><span class="bx">✓</span><span>${i}</span></div>`).join('')}</div></div>`;
+}
+function steps(s){
+  return `<div class="steps"><span class="tag do">${s.label||'DO THIS'}</span>
+    ${s.rows.map((r,i)=>`<div class="row"><div class="num">${i+1}</div><div><b>${r.t}</b><span>${r.d||''}</span></div></div>`).join('')}</div>`;
+}
+function rawHtml(h){ return h; }
+
+function worksheetSlugsFor(s){
+  if(s.type === 'appendix' && s.slug) return [s.slug];
+  if(s.type === 'appendix-index') return ['__index__'];
+  const link = s.worksheet || WORKBOOK_BY_NAV[s.nav];
+  if(!link) return [];
+  return Array.isArray(link) ? link : [link];
+}
+function openSlideWorksheets(csv){
+  const slugs = (csv || '').split(',').filter(Boolean);
+  if(slugs.length === 1 && slugs[0] === '__index__'){ goWorksheets(); return; }
+  if(slugs.length === 1){
+    const i = SLIDES.findIndex(s => s.slug === slugs[0]);
+    if(i >= 0){ show(i); return; }
+  }
+  if(slugs.length) goWorksheets();
+}
+function highlightedWorksheetSlugs(){
+  if(worksheetContextIdx == null) return [];
+  const s = SLIDES[worksheetContextIdx];
+  if(!s || s.type === 'appendix-index' || s.type === 'appendix') return [];
+  return worksheetSlugsFor(s).filter(x => x !== '__index__');
+}
+function syncWorksheetsBtn(){
+  const btn = document.getElementById('worksheetsBtn');
+  const slugs = worksheetSlugsFor(SLIDES[idx]);
+  const linked = slugs.length > 0 && !(slugs.length === 1 && slugs[0] === '__index__');
+  btn.classList.toggle('linked', linked);
+  btn.classList.toggle('unlinked', !linked);
+  btn.title = linked ? 'Open linked worksheet (W)' : 'No worksheet on this slide (W)';
+}
+function clickWorksheets(){
+  worksheetContextIdx = idx;
+  const slugs = worksheetSlugsFor(SLIDES[idx]).filter(x => x !== '__index__');
+  if(slugs.length === 1) openSlideWorksheets(slugs[0]);
+  else goWorksheets();
+}
+function backToLesson(){
+  if(worksheetContextIdx != null && SLIDES[worksheetContextIdx]) show(worksheetContextIdx);
+}
+function worksheetBackBtn(){
+  if(worksheetContextIdx == null || !SLIDES[worksheetContextIdx]) return '';
+  return `<button type="button" class="btn primary worksheetBack" onclick="backToLesson()">← Back to lesson</button>`;
+}
+
+function renderSlide(s){
+  const el = document.getElementById('slide');
+  el.className = 'slide ' + (s.type||'lesson');
+  el.style.background = '';
+  if(s.type==='cover' && s.bg){
+    el.style.background = `linear-gradient(90deg, rgba(14,10,18,.95) 30%, rgba(14,10,18,.45) 70%, rgba(14,10,18,.25)), url('${s.bg}') ${s.bgPos||'right center'} / cover no-repeat`;
+  }
+  let html='';
+  if(s.eyebrowR) html+=`<div class="eyebrow-r">${s.eyebrowR}</div>`;
+
+  if(s.type==='cover'){
+    html += `<span class="eyebrow">${s.eyebrow||''}</span>
+      <h1 class="title">${s.title}</h1><p class="sub">${s.sub||''}</p>
+      <div class="meta">${(s.meta||[]).map(m=>`<span class="pill">${m}</span>`).join('')}</div>`;
+  }
+  else if(s.type==='divider'){
+    html += `<div class="pkr">${s.eyebrow||''}</div><h1>${s.title}</h1>
+      <div class="goals">${(s.goals||[]).map((g,i)=>`<div class="goal"><i style="background:var(--p${(i%5)+1})">${i+1}</i><span>${g}</span></div>`).join('')}</div>`;
+  }
+  else if(s.type==='checkpoint'){
+    html += `<span class="eyebrow" style="align-self:center">${s.eyebrow||''}</span>
+      <h1>${s.title}</h1><p>${s.sub||''}</p>
+      <button class="btn assess" style="padding:14px 26px;font-size:17px" onclick="openOverlay()">📋 Open assessment (task &amp; sources)</button>`;
+  }
+  else if(s.type==='appendix-index'){
+    const hi = highlightedWorksheetSlugs();
+    html += worksheetBackBtn();
+    html += `<span class="eyebrow">${s.eyebrow||''}</span>
+      <h1 class="title">${s.title}</h1>
+      ${s.sub?`<p class="appendix-sub">${s.sub}</p>`:''}
+      <div class="worksheetList">${(s.items||[]).map(it=>{
+        const i = SLIDES.findIndex(x => x.slug === it.slug);
+        const hl = hi.includes(it.slug) ? ' highlight' : '';
+        return `<button type="button" class="worksheetCard${hl}" onclick="show(${i})"><b>${it.title}</b><span>${it.desc}</span></button>`;
+      }).join('')}</div>`;
+  }
+  else if(s.type==='appendix'){
+    const pdf = s.pdf || WORKBOOK_PDF;
+    html += worksheetBackBtn();
+    html += `<span class="eyebrow">${s.eyebrow||''}</span>
+      <h1 class="title">${s.title}</h1>
+      ${s.sub?`<p class="appendix-sub">${s.sub}</p>`:''}
+      <div class="pdfFrame"><iframe src="${pdf}" title="${s.title}"></iframe></div>
+      <p class="pdfOpen"><a class="btn worksheets linked" href="${pdf}" target="_blank" rel="noopener">Open PDF in new tab ↗</a></p>`;
+  }
+  else {
+    if(s.eyebrow) html+=`<span class="eyebrow">${s.eyebrow}</span>`;
+    html += `<h1 class="title">${s.title}</h1>`;
+    const left = (s.left||[]).map(renderBlock).join('');
+    const right = (s.right||[]).map(renderBlock).join('');
+    html += `<div class="cols ${s.wideLeft?'wide-left':''}"><div class="col">${left}</div><div class="col">${right}</div></div>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderBlock(b){
+  switch(b.k){
+    case 'read': return readCard(b);
+    case 'hook': return hook(b.q);
+    case 'wp': return wordpower(b.list);
+    case 'brain': return bq(b.q);
+    case 'steps': return steps(b);
+    case 'exit': return exitCheck(b.items);
+    case 'img': return `<div class="imgframe${b.diagram?' diagram':''}${b.fit?' fit':''}"><img src="${b.src}" alt="${b.alt||''}" loading="lazy">${b.cap?`<div class="cap">${b.cap}</div>`:''}</div>`;
+    case 'imgrow': { const n=Math.min(b.items.length,4);
+      const cells=b.items.map(it=>`<div class="ic${it.fit?' fit':''}"><img src="${it.src}" alt="${it.alt||it.label||''}" loading="lazy">${it.cap?`<div class="cap">${it.cap}</div>`:''}</div>`).join('');
+      return `<div class="imgrow" style="grid-template-columns:repeat(${n},1fr)">${cells}</div>`; }
+    case 'html': return rawHtml(b.html);
+    default: return '';
+  }
+}
+
+/* =========================================================
+   NAV + STATE
+   ========================================================= */
+let idx = 0;
+let worksheetContextIdx = null;
+function show(i){
+  idx = Math.max(0, Math.min(SLIDES.length-1, i));
+  renderSlide(SLIDES[idx]);
+  document.getElementById('counter').textContent = `${idx+1} / ${SLIDES.length}`;
+  document.getElementById('jump').value = idx;
+  if(document.getElementById('tnotes').classList.contains('open')) fillNotes();
+  syncWorksheetsBtn();
+  requestAnimationFrame(updatePresentScale);
+}
+function buildJump(){
+  const sel=document.getElementById('jump'); sel.innerHTML='';
+  SLIDES.forEach((s,i)=>{ const o=document.createElement('option'); o.value=i;
+    o.textContent=`${i+1}. ${s.nav||s.title||('Slide '+(i+1))}`; sel.appendChild(o); });
+}
+function fillNotes(){
+  const s=SLIDES[idx];
+  document.getElementById('tnotesTitle').textContent=s.nav||s.title||`Slide ${idx+1}`;
+  document.getElementById('tnotesBody').innerHTML = s.notes || '<p>No notes for this screen.</p>';
+}
+function openNotes(){ document.getElementById('tnotes').classList.add('open'); document.getElementById('notesBtn').classList.add('notes-open'); fillNotes(); }
+function closeNotes(){ document.getElementById('tnotes').classList.remove('open'); document.getElementById('notesBtn').classList.remove('notes-open'); }
+function detachNotes(){
+  const s=SLIDES[idx];
+  const w=window.open('','tnotes','width=460,height=760');
+  w.document.write(`<title>Teacher Notes — ${s.nav||s.title}</title>
+    <style>body{font-family:system-ui;background:#1c1610;color:#c9bcb0;line-height:1.6;padding:22px;}
+    h2{color:#ffe082} h4{color:#d9a070;margin:14px 0 4px} ul{margin-left:18px} li{margin:4px 0}</style>
+    <h2>${s.nav||s.title}</h2>${s.notes||'<p>No notes.</p>'}`);
+  w.document.close();
+}
+let savedIdxForOverlay=null;
+function switchAssessTab(pane){
+  document.querySelectorAll('#overlay .tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('#overlay .panelpane').forEach(x=>x.classList.remove('active'));
+  document.querySelector(`#overlay .tab[data-pane="${pane}"]`)?.classList.add('active');
+  document.getElementById('pane-'+pane)?.classList.add('active');
+}
+function openOverlay(forcedPane){
+  savedIdxForOverlay=idx;
+  const slide = SLIDES[idx];
+  const pane = (typeof forcedPane === 'string' && forcedPane)
+    || slide?.assessTab
+    || ASSESS_TAB_BY_NAV[slide?.nav]
+    || 'task';
+  switchAssessTab(pane);
+  document.getElementById('overlay').classList.add('open');
+}
+function closeOverlay(){ document.getElementById('overlay').classList.remove('open');
+  if(savedIdxForOverlay!=null){ show(savedIdxForOverlay); } }
+function goWorksheets(){
+  const i = SLIDES.findIndex(s => s.type === 'appendix-index');
+  if(i >= 0) show(i);
+}
+
+document.getElementById('prev').onclick=()=>show(idx-1);
+document.getElementById('next').onclick=()=>show(idx+1);
+document.getElementById('jump').onchange=e=>show(+e.target.value);
+document.getElementById('notesBtn').onclick=openNotes;
+document.getElementById('notesClose').onclick=closeNotes;
+document.getElementById('detachBtn').onclick=detachNotes;
+document.getElementById('assessBtn').onclick=()=>openOverlay();
+document.getElementById('worksheetsBtn').onclick=clickWorksheets;
+document.getElementById('backBtn').onclick=closeOverlay;
+
+function isPresenting(){
+  return document.documentElement.classList.contains('presenting')
+    || document.fullscreenElement || document.webkitFullscreenElement;
+}
+function setPresenting(on){
+  document.documentElement.classList.toggle('presenting', on);
+  syncPresentBtn();
+  requestAnimationFrame(()=>requestAnimationFrame(updatePresentScale));
+}
+function updatePresentScale(){
+  const slide=document.getElementById('slide');
+  if(!isPresenting()){ slide.style.transform=''; document.documentElement.style.removeProperty('--present-scale'); return; }
+  const wrap=document.getElementById('stageWrap');
+  const scale=Math.min(wrap.clientWidth/1180, wrap.clientHeight/738);
+  document.documentElement.style.setProperty('--present-scale', scale);
+  slide.style.transform=`scale(${scale})`;
+}
+function togglePresent(){
+  if(isPresenting()){
+    setPresenting(false);
+    if(document.fullscreenElement||document.webkitFullscreenElement)
+      (document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen)?.call(document);
+  } else {
+    setPresenting(true);
+    const el=document.documentElement;
+    const req=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+    if(req){
+      const p=req.call(el);
+      if(p&&p.then) p.then(()=>requestAnimationFrame(updatePresentScale)).catch(()=>{});
+    }
+  }
+}
+function syncPresentBtn(){
+  document.getElementById('presentBtn').textContent = isPresenting() ? '⤢ Exit' : '⛶ Present';
+}
+function onFullscreenChange(){
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement)
+    document.documentElement.classList.remove('presenting');
+  syncPresentBtn();
+  requestAnimationFrame(updatePresentScale);
+}
+document.getElementById('presentBtn').onclick=togglePresent;
+document.addEventListener('fullscreenchange',onFullscreenChange);
+document.addEventListener('webkitfullscreenchange',onFullscreenChange);
+window.addEventListener('resize',updatePresentScale);
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>switchAssessTab(t.dataset.pane));
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='SELECT') return;
+  if(e.key==='ArrowRight') show(idx+1);
+  else if(e.key==='ArrowLeft') show(idx-1);
+  else if(e.key.toLowerCase()==='t'){ document.getElementById('tnotes').classList.contains('open')?closeNotes():openNotes(); }
+  else if(e.key.toLowerCase()==='d') detachNotes();
+  else if(e.key.toLowerCase()==='a'){ document.getElementById('overlay').classList.contains('open')?closeOverlay():openOverlay(); }
+  else if(e.key.toLowerCase()==='w') clickWorksheets();
+  else if(e.key.toLowerCase()==='f') togglePresent();
+  else if(e.key==='Escape'){
+    if(document.getElementById('tnotes').classList.contains('open')){ closeNotes(); return; }
+    if(isPresenting()){ togglePresent(); return; }
+    closeOverlay(); closeNotes();
+    const t = SLIDES[idx]?.type;
+    if((t === 'appendix' || t === 'appendix-index') && worksheetContextIdx != null) backToLesson();
+  }
+});
+
+document.getElementById('pane-task').innerHTML = ASSESS_TASK;
+document.getElementById('pane-source1').innerHTML = ASSESS_SOURCE1;
+document.getElementById('pane-source2').innerHTML = ASSESS_SOURCE2;
+document.getElementById('pane-guide').innerHTML = ASSESS_GUIDE;
+
+buildJump(); show(0);
+</script>
+</body>
+</html>
