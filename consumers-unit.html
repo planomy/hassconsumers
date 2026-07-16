@@ -91,6 +91,18 @@
   .brain .n{ flex:none; width:24px; height:24px; border-radius:50%; display:grid; place-items:center;
     font-weight:900; font-size:13px; color:var(--accent-on); background:linear-gradient(135deg,var(--mint),var(--accent)); }
 
+  .know-card h3{font-size:17px;margin:8px 0 6px}
+  .know-list{margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.45;color:var(--ink-dim)}
+  .know-list li{margin-bottom:6px}
+  .discuss-card h3{font-size:17px}
+  .discuss-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px;padding:0;margin-left:0}
+  .discuss-list li{display:flex;gap:10px;font-size:14px;line-height:1.35}
+  .discuss-list .n{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:11px;background:var(--chip-bg);border:1px solid var(--line)}
+  .discuss-tip{margin-top:10px;font-size:13px;color:var(--ink-faint);font-style:italic}
+  .sort-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .sort-col{background:var(--chip-bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+  .sort-col b{display:block;margin-bottom:6px;color:var(--mint);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
   .steps{ background:var(--cream); color:var(--cream-ink); border-radius:var(--radius); padding:18px 20px; }
   .steps .tag{margin-bottom:14px}
   .steps .row{ display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px dashed #d8cda6;}
@@ -99,6 +111,26 @@
     display:grid; place-items:center; font-weight:900; }
   .steps .row b{ font-size:18px; display:block; }
   .steps .row span{ font-size:15px; color:#4a5a54; }
+
+  
+  /* 15-minute demonstrable win */
+  .win15{
+    background:linear-gradient(135deg, color-mix(in srgb, var(--mint, #3d9b8f) 18%, transparent), var(--panel2, var(--panel)));
+    border:1px solid color-mix(in srgb, var(--mint, #3d9b8f) 45%, var(--line));
+    border-radius:var(--radius); padding:12px 14px; margin-bottom:2px;
+  }
+  .win15 .lbl{
+    font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--mint, #2a9d8f); margin-bottom:6px;
+  }
+  .win15 .can{
+    font-family:inherit; font-size:clamp(16px,1.9vmin,22px); font-weight:800;
+    letter-spacing:-.02em; line-height:1.25; margin:0 0 8px;
+  }
+  .win15 .prove{
+    font-size:13.5px; color:var(--ink-dim, #4a5a54); line-height:1.4; margin:0;
+  }
+  .win15 .prove b{ color:var(--ink); }
 
   .exit{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; }
   .exit h4{ font-size:20px; margin-bottom:12px; }
@@ -404,7 +436,7 @@ SLIDES.push({ type:'cover', nav:'Cover',
   eyebrow:'Year 5 HASS · BrisbaneSDE',
   title:'We are all consumers',
   sub:'Every day you choose what to buy, what to skip, and what to save for. Explore needs and wants, discover what shapes your choices, and learn to decide like a smart consumer in your community.',
-  meta:['8 teaching weeks · 16 lessons','Part A · Week 7','Part B · Week 8','Online-ready'],
+  meta:['8 teaching weeks · 16 lessons · 2 per week · 2 per week','Part A · Week 7','Part B · Week 8','Online-ready'],
   bg:'cover-hero.jpeg',
   bgPos:'-10% center',
   notes:`<p>Welcome. Set the big question: <b>How do communities decide how to use limited resources?</b></p>
@@ -433,14 +465,14 @@ SLIDES.push({ type:'divider', nav:'Phase 1 — Needs, Wants & Resources',
 SLIDES.push({ nav:'L1A — Needs or wants?',
   eyebrow:'Week 1 · Lesson 1 · Learn / Read / Notice', eyebrowR:'Lesson 1 · Screen A',
   title:'Do you <i>need</i> it — or just <i>want</i> it?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'The $100 question', body:[
     'Imagine you have exactly <b>$100</b>. You could buy the latest game, new shoes, a phone case, or groceries for the week. You cannot buy everything — so you must <b>choose</b>.',
     'In economics, a <b>need</b> is something necessary to maintain a basic standard of living (food, shelter, water, clothing). A <b>want</b> is something you desire for satisfaction — nice to have, but not essential for survival.',
     'Here is the twist: what counts as a "need" can change depending on <b>who you are</b>, <b>where you live</b>, and <b>when</b> you live. A smartphone might be a want for one person and a need for someone who relies on it for work or school.'
   ], notice:'Needs and wants are not always fixed — context and community matter.'},
     {k:'img', src:'resources.jpeg', fit:true, cap:'Every aisle is a choice — needs, wants, and a budget that cannot buy everything.'}],
-  right:[{k:'hook', q:'Is Wi-Fi a need or a want in 2026? Could two people disagree — and both be right?'},
+  right:[{k:'win15', can:'sort one item as a need or a want with a reason', prove:'Say the item + N/W + because… (context allowed).'},{k:'hook', q:'Is Wi-Fi a need or a want in 2026? Could two people disagree — and both be right?'},
     {k:'wp', list:[
       {t:'consumer',d:'a person who uses goods and services'},{t:'need',d:'necessary for basic standard of living'},
       {t:'want',d:'desired but not essential for survival'},{t:'economics',d:'study of how resources are allocated'},
@@ -460,7 +492,7 @@ SLIDES.push({ nav:'L1A — Needs or wants?',
 SLIDES.push({ nav:'L1B — Sort your life',
   eyebrow:'Week 1 · Lesson 1 · Practise / Sort / Share', eyebrowR:'Lesson 1 · Screen B',
   title:'Sort your life: needs and wants',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'List 10 items', d:'Things you or your family spend money on in a typical month.'},
     {t:'Sort them', d:'Label each N (need) or W (want). Be ready to defend tricky ones.'},
@@ -475,17 +507,34 @@ SLIDES.push({ nav:'L1B — Sort your life',
   <h4>Discussion prompt</h4><p>Compare lists for a toddler vs a grandparent vs a refugee family. ABS data shows spending patterns shift sharply by household composition (e.g. education spending up <b>43.5%</b> 2009–10 to 2015–16, ABS HES).</p>
   <h4>Exit check</h4><p>Listen for <b>scarcity</b> used correctly — unlimited wants, limited money/resources.</p>` });
 
+SLIDES.push({ nav:'L1C — Needs & wants edge cases',
+  eyebrow:'Week 1 · Lesson 1 · Explore / Stretch / Share', eyebrowR:'Lesson 1 · Screen C',
+  title:'Needs & wants edge cases',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Needs, wants and edge cases',points:['A <b>need</b> is required for survival or wellbeing; a <b>want</b> is a desire.','Context matters — Wi-Fi can be a need for online learning but a want for gaming only.','ABS Household Expenditure Survey (HES) shows Australian families spend differently by age and income.','<b>Scarcity</b> means unlimited wants but limited money and resources.']},{k:'discuss',title:'Argue N or W',label:'DISCUSS',prompts:['Is a school uniform a need or a want? Give two reasons each side.','When could a phone be a need rather than a want?','How does scarcity force families to choose between needs and wants?','Whose list would change most after a natural disaster — and why?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Edge-case cards',d:'Sort Wi-Fi, medicine, streaming, shoes — defend one tricky item.'},{t:'ABS link',d:'Read a spending fact aloud and link it to needs vs wants.'},{t:'Scarcity sentence',d:'Write scarcity in a sentence about a family budget.'},{t:'Perspective',d:'Rewrite one want as a need for a different person.'}]},{k:'brain',q:['Which item split the class most — and what does that show?','How is scarcity different from being poor?','Why do economists say all choices have a cost?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L1D — Scarcity in one minute',
+  eyebrow:'Week 1 · Lesson 1 · Secure / Prove / Reflect', eyebrowR:'Lesson 1 · Screen D',
+  title:'Scarcity in one minute',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Scarcity proved',points:['Needs and wants depend on situation and community.','Scarcity explains why we cannot buy everything.']},{k:'steps',label:'Secure / Prove',rows:[{t:'One-minute scarcity',d:'Say a correct scarcity sentence aloud to your partner.'},{t:'Sort + reason',d:'Sort three items with because reasons.'},{t:'Vocabulary',d:'Underline need, want and scarcity.'},{t:'Exit ready',d:'Exit check cold.'}]}],
+  right:[{k:'discuss',title:'Budget reality',label:'DISCUSS',prompts:['What did you give up when you chose one need over a want?','How would a refugee family list differ from yours?','Why is context important in HASS answers?','What ABS data surprised you?']},{k:'exit',items:['define need and want in my own words','sort items as needs or wants with reasons','explain that needs can differ between people and communities','use the word scarcity correctly']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 2 ===== */
 SLIDES.push({ nav:'L2A — Same planet, different lists',
   eyebrow:'Week 1 · Lesson 2 · Learn / Read / Notice', eyebrowR:'Lesson 2 · Screen A',
   title:'Same planet, different shopping lists',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'Needs change with the person', body:[
     'A baby\'s needs include nappies and formula. A tradesperson might need steel-capped boots to do their job safely. A family in a cold climate needs heating; a family in the tropics might prioritise shade and water storage.',
     'When we <b>categorise</b> needs and wants for different groups, we are thinking like economists — and like members of a <b>community</b> who must decide how to share limited resources fairly.'
   ], notice:'Smart consumers and communities consider WHO they are deciding for — not just themselves.'},
     {k:'img', src:'diapers-and-formula.jpeg', cap:'A baby\'s needs — nappies and formula are essentials for many families.'}],
-  right:[{k:'hook', q:'Would a school principal\'s "needs list" look the same as a Year 5 student\'s? What would be on each?'},
+  right:[{k:'win15', can:'give one example of how needs differ by community', prove:'Name two people/places and one different need each.'},{k:'hook', q:'Would a school principal\'s "needs list" look the same as a Year 5 student\'s? What would be on each?'},
     {k:'wp', list:[
       {t:'categorise',d:'sort into groups by features'},{t:'community',d:'a group of people in a place'},
       {t:'allocate',d:'share or distribute a resource'},{t:'resource allocation',d:'assigning limited resources'},
@@ -503,7 +552,7 @@ SLIDES.push({ nav:'L2A — Same planet, different lists',
 SLIDES.push({ nav:'L2B — Needs for different groups',
   eyebrow:'Week 1 · Lesson 2 · Practise / Write / Share', eyebrowR:'Lesson 2 · Screen B',
   title:'Needs and wants for different groups',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Pick 2 groups', d:'e.g. elderly residents + Year 5 students, or new families + long-time locals.'},
     {t:'List top 3 needs', d:'For each group — what do they need most from their community?'},
@@ -516,18 +565,35 @@ SLIDES.push({ nav:'L2B — Needs for different groups',
   <h4>Extension</h4><p>Two groups, one budget: if the P&amp;C has $2,000, can both groups' top-3 needs be fully met? (No — force prioritising.)</p>
   <h4>Marking tip</h4><p>Reward <b>perspective</b> language: "From a parent's view…" / "Students might argue…"</p>` });
 
+SLIDES.push({ nav:'L2C — Same planet, different lists — deeper',
+  eyebrow:'Week 1 · Lesson 2 · Explore / Stretch / Share', eyebrowR:'Lesson 2 · Screen C',
+  title:'Same planet, different lists — deeper',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Same planet, different lists',points:['Household spending patterns differ by location, culture, income and life stage.','ABS data: education spending rose sharply as more families invested in schooling.','Rural, urban and remote communities prioritise different needs.','Comparing lists builds empathy — not judgement.']},{k:'discuss',title:'Whose list?',label:'DISCUSS',prompts:['How might a farmer household list differ from a city apartment?','What needs might rise when a baby joins a family?','Why is water a bigger budget item in some regions?','How do climate and jobs shape spending?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'List swap',d:'Draft a shopping list for someone unlike you — 8 items.'},{t:'ABS fact',d:'Use one statistic to explain a spending difference.'},{t:'Map link',d:'Connect Brisbane SDE life to one remote community need.'},{t:'Discuss',d:'Share one item that appears on every list.'}]},{k:'brain',q:['What assumption did you challenge today?','How is comparing communities different from ranking them?','Which ABS figure best supports your thinking?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L2D — Perspective swap',
+  eyebrow:'Week 1 · Lesson 2 · Secure / Prove / Reflect', eyebrowR:'Lesson 2 · Screen D',
+  title:'Perspective swap',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Perspective swap',points:['Needs differ between people and places — always give reasons.','Evidence from data strengthens HASS arguments.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Two places',d:'Name two communities and one different need each.'},{t:'Reasoned list',d:'Explain two choices on your swapped list.'},{t:'Data cite',d:'Mention ABS or real-world evidence once.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card cream"><span class="tag try">COMPARE</span><p style="margin-top:8px">Two-column: <b>My household</b> vs <b>Another community</b> — three needs that differ and why.</p></div>`},{k:'exit',items:['compare needs and wants for different groups','explain why the same item can be a need for one person and a want for another','identify where community needs conflict','use perspective in my reasoning']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 3 ===== */
 SLIDES.push({ nav:'L3A — Where does stuff come from?',
   eyebrow:'Week 2 · Lesson 3 · Learn / Read / Notice', eyebrowR:'Lesson 3 · Screen A',
   title:'Where does stuff actually come from?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'Three kinds of resources', body:[
     'Everything you buy started as a <b>resource</b> — something used to produce goods and services. Economists group resources into three types:',
     '<b>Natural resources</b> — air, water, land, minerals, trees. <b>Human resources</b> — people\'s labour, skills and brainpower (chefs, nurses, designers, you!). <b>Capital resources</b> — things already made that help produce more (machines, tools, ovens, shops, laptops).',
     'Production usually needs a <b>combination</b> of all three. A pancake stall needs flour (natural), a cook (human), and a hotplate (capital).'
   ], notice:'Resources are limited. Combining them wisely is what economics is about.'},
     {k:'img', src:'needs-wants.jpeg', cap:'Natural, human and capital resources combine to make every product and service.'}],
-  right:[{k:'hook', q:'You want to run a lemonade stand. What natural, human and capital resources would you need?'},
+  right:[{k:'win15', can:'label a resource as natural, human or capital', prove:'Point to one classroom example for each type.'},{k:'hook', q:'You want to run a lemonade stand. What natural, human and capital resources would you need?'},
     {k:'wp', list:[
       {t:'natural resource',d:'air, water, land, materials from earth'},{t:'human resource',d:'people\'s work and skills'},
       {t:'capital resource',d:'tools, machines, buildings'},{t:'goods',d:'tangible items you can touch'},
@@ -546,7 +612,7 @@ SLIDES.push({ nav:'L3A — Where does stuff come from?',
 SLIDES.push({ nav:'L3B — Categorise resources',
   eyebrow:'Week 2 · Lesson 3 · Practise / Sort / Share', eyebrowR:'Lesson 3 · Screen B',
   title:'Categorise the resources',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Pick a product', d:'Something from your kitchen or bedroom.'},
     {t:'Trace it back', d:'List one natural, one human and one capital resource used to make it.'},
@@ -562,17 +628,34 @@ SLIDES.push({ nav:'L3B — Categorise resources',
   <h4>Quick sort</h4><p>Pizza row on slide: wood + wheat (natural), chef (human), oven (capital). Students trace their own product the same way.</p>
   <h4>Fun fact (ABS)</h4><p>Household spending on furnishings/equipment averaged <b>$58/week</b> in 2015–16 — capital resources in homes are already a major spend category (ABS HES).</p>` });
 
+SLIDES.push({ nav:'L3C — Resource hunt 2.0',
+  eyebrow:'Week 2 · Lesson 3 · Explore / Stretch / Share', eyebrowR:'Lesson 3 · Screen C',
+  title:'Resource hunt 2.0',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Resources that make things happen',points:['<b>Natural</b>: gifts of nature (land, minerals, timber).','<b>Human</b>: people skills, labour, knowledge.','<b>Capital</b>: human-made tools (machines, buildings, computers).','Most products need all three working together.']},{k:'discuss',title:'Trace the chain',label:'DISCUSS',prompts:['What natural resource is in a wooden fete sign?','Where does human capital appear in a bakery?','Why is a laptop capital, not natural?','What happens if one resource type is missing?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Classroom hunt',d:'Find one example of natural, human and capital.'},{t:'Snack trace',d:'Trace a cupcake from farm to stall.'},{t:'Hidden capital',d:'Spot capital resources in a service business.'},{t:'Chain diagram',d:'Sketch natural → human → capital for one good.'}]},{k:'brain',q:['Which resource type is easiest to overlook?','How do human resources turn natural resources into goods?','Why is education an investment in human capital?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L3D — Resource chain',
+  eyebrow:'Week 2 · Lesson 3 · Secure / Prove / Reflect', eyebrowR:'Lesson 3 · Screen D',
+  title:'Resource chain',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Resource chain',points:['Goods and services need natural, human and capital resources.','Tracing chains shows interdependence.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Three types',d:'Point to classroom examples of each resource.'},{t:'Chain write',d:'Write a 3-step chain for a fete snack.'},{t:'Label',d:'Label resources on a simple product sketch.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Resource talk',label:'DISCUSS',prompts:['Which resource is scarcest for our school fete?','How would drought change natural resources for food stalls?','Why are skilled volunteers human capital?','What capital would a lemonade stall need?']},{k:'exit',items:['name the three types of resources','give an example of each type','explain that production uses a combination of resources','complete the categorising resources worksheet']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 4 ===== */
 SLIDES.push({ nav:'L4A — Goods, services & the cake stall',
   eyebrow:'Week 2 · Lesson 4 · Learn / Read / Notice', eyebrowR:'Lesson 4 · Screen A',
   title:'Goods, services — and the cake stall',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'Can you touch it?', body:[
     '<b>Goods</b> are tangible — you can see and touch them (a cake, a book, a phone). <b>Services</b> are intangible — someone does something for you (a haircut, a flight, a lesson, a delivery).',
     'Your school wants to run a <b>cake stall</b> at the fete. List every <b>good</b> you would need (ingredients, plates, signage) and every <b>service</b> (baking, selling, cleaning up, advertising). Both cost resources — and both help satisfy needs and wants.'
   ], notice:'Fundraising events need goods AND services — and people to provide them.'},
     {k:'img', src:'cake-stall.jpeg', cap:'A cake stall needs goods (ingredients, plates) and services (baking, selling, cleaning).'}],
-  right:[{k:'hook', q:'Is a Netflix subscription a good or a service? What about a downloaded game?'},
+  right:[{k:'win15', can:'tell a good from a service with an example of each', prove:'Hold up or name one good + one service in 20 seconds.'},{k:'hook', q:'Is a Netflix subscription a good or a service? What about a downloaded game?'},
     {k:'wp', list:[
       {t:'goods',d:'tangible products'},{t:'services',d:'intangible help or work'},
       {t:'transaction',d:'exchange of money for a product'},{t:'transaction type',d:'cash, debit, credit'},
@@ -590,7 +673,7 @@ SLIDES.push({ nav:'L4A — Goods, services & the cake stall',
 SLIDES.push({ nav:'L4B — Cake stall planner',
   eyebrow:'Week 2 · Lesson 4 · Practise / Plan / Share', eyebrowR:'Lesson 4 · Screen B',
   title:'Plan the cake stall',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Goods list', d:'List at least 5 goods needed for a school cake stall.'},
     {t:'Services list', d:'List at least 5 services (jobs people must do).'},
@@ -602,6 +685,23 @@ SLIDES.push({ nav:'L4B — Cake stall planner',
   notes:`<h4>Bridge to assessment</h4><p>Hot choc / iceblocks / pancakes stall uses identical thinking — goods, services, resources, limited budget.</p>
   <h4>Share-out</h4><p>Which service did most pairs forget? (Often <b>food safety / supervision</b> — human resource.)</p>
   <h4>Stat talk</h4><p>ABS HES 2015–16: household services &amp; operation averaged <b>$45/week</b> — services are a major household cost alongside goods.</p>` });
+
+SLIDES.push({ nav:'L4C — Goods & services mash-up',
+  eyebrow:'Week 2 · Lesson 4 · Explore / Stretch / Share', eyebrowR:'Lesson 4 · Screen C',
+  title:'Goods & services mash-up',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Goods, services and mixed buys',points:['A <b>good</b> is something you can touch and take home.','A <b>service</b> is help or work someone does for you.','Many purchases mix both — haircut includes service and products.','School fetes sell goods (cakes) and services (face painting).']},{k:'discuss',title:'Split the purchase',label:'DISCUSS',prompts:['Is Uber Eats a good, service or both?','What part of a cake stall is service if someone ices your name?','Why might a business choose goods over services?','What service could our fete add without selling a product?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Mash-up sort',d:'Split five mixed purchases into good vs service parts.'},{t:'Stall design',d:'Plan a stall selling one good and one service.'},{t:'Price talk',d:'Why might services be priced by time?'},{t:'Role-play',d:'30-second fete pitch for your stall.'}]},{k:'brain',q:['When is the line between good and service blurry?','Which stall type needs more human capital?','How do goods and services meet different consumer needs?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L4D — Fete stall design',
+  eyebrow:'Week 2 · Lesson 4 · Secure / Prove / Reflect', eyebrowR:'Lesson 4 · Screen D',
+  title:'Fete stall design',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Fete stall design',points:['Name one good and one service with clear examples.','Stalls must match resources and consumer demand.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Good + service',d:'Name each with a fete example in 20 seconds.'},{t:'Stall plan',d:'Sketch layout: where is good? where is service?'},{t:'Consumer why',d:'Who would buy each and why?'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card dark"><span class="tag try">STALL MAP</span><p style="margin-top:8px">Draw your stall. Label: good sold, service offered, resources needed (natural, human, capital).</p></div>`},{k:'exit',items:['distinguish goods from services','identify goods and services for a real scenario','link goods and services to types of resources','explain why both are needed at a fundraiser']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
 
 /* ===================== PHASE 2 ======================== */
 SLIDES.push({ type:'divider', nav:'Phase 2 — Factors & Community Decisions',
@@ -621,14 +721,14 @@ SLIDES.push({ type:'divider', nav:'Phase 2 — Factors & Community Decisions',
 SLIDES.push({ nav:'L5A — What pushes you to buy?',
   eyebrow:'Week 3 · Lesson 5 · Learn / Read / Notice', eyebrowR:'Lesson 5 · Screen A',
   title:'What pushes you to buy?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'Six invisible forces', body:[
     'You think you chose freely — but <b>six types of factors</b> shape almost every purchase:',
     '<b>Personal</b> — your likes and dislikes. <b>Social</b> — trends, what friends buy. <b>Economic</b> — your budget and price. <b>Psychological</b> — advertising and persuasion. <b>Cultural</b> — background, food, traditions. <b>Environmental</b> — sustainability, eco-friendly choices.',
     'Smart consumers notice <b>which factor is talking loudest</b> before they decide.'
   ], notice:'Part A asks you to identify factors — name the type AND explain how it influences the choice.'},
     {k:'img', src:'factors-wheel.png', diagram:true, cap:'Six types of factors that influence every consumer choice.'}],
-  right:[{k:'hook', q:'You see an ad: "LIMITED EDITION — only 3 left!" Which factor is the company targeting?'},
+  right:[{k:'win15', can:'name one factor that influences a consumer choice', prove:'Link a real purchase to price, ads, peers, or values.'},{k:'hook', q:'You see an ad: "LIMITED EDITION — only 3 left!" Which factor is the company targeting?'},
     {k:'wp', list:[
       {t:'consumer choice',d:'how people decide what to purchase'},{t:'personal',d:'individual likes/dislikes'},
       {t:'economic',d:'budget, price, affordability'},{t:'psychological',d:'advertising, persuasion'},
@@ -647,7 +747,7 @@ SLIDES.push({ nav:'L5A — What pushes you to buy?',
 SLIDES.push({ nav:'L5B — Factor detectives',
   eyebrow:'Week 3 · Lesson 5 · Practise / Analyse / Share', eyebrowR:'Lesson 5 · Screen B',
   title:'Factor detectives',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Pick 3 purchases', d:'Something you bought or wanted recently.'},
     {t:'Tag the factors', d:'Which of the 6 types influenced each choice? More than one?'},
@@ -661,11 +761,28 @@ SLIDES.push({ nav:'L5B — Factor detectives',
   <h4>Activity</h4><p>Three purchases on mini-whiteboards — tag factors. Share "hardest to spot" (usually psychological).</p>
   <h4>Real data (ABS)</h4><p>ABS MHSI (Aug 2024): spending on <b>clothing and footwear</b> rose <b>4.3%</b> through the year — social and personal factors visible in real data trends.</p>` });
 
+SLIDES.push({ nav:'L5C — Factor detective',
+  eyebrow:'Week 3 · Lesson 5 · Explore / Stretch / Share', eyebrowR:'Lesson 5 · Screen C',
+  title:'Factor detective',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'What influences consumer choices',points:['Factors include <b>price</b>, <b>advertising</b>, peers, quality, values and convenience.','Advertisers target emotions — happiness, fear of missing out, belonging.','Not every factor matters equally to every person.','School fete choices happen quickly — factors compress into seconds.']},{k:'discuss',title:'Factor detective',label:'DISCUSS',prompts:['Which factor pushed you last time you bought a snack?','How can an ad make a want feel like a need?','Would you trust a friend\'s recommendation over a celebrity?','How does price change when a stall supports charity?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Ad annotate',d:'Mark hidden factors on a sample advertisement.'},{t:'Rank five',d:'Rank price, peers, ads, quality, values for a fete toy.'},{t:'Factor story',d:'Tell a 3-sentence purchase story naming two factors.'},{t:'Ethics',d:'When is influence unfair to young consumers?'}]},{k:'brain',q:['Which factor do adults underestimate for kids?','How is a school fete different from a supermarket?','Can values outweigh a cheap price?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L5D — Factor ranking',
+  eyebrow:'Week 3 · Lesson 5 · Secure / Prove / Reflect', eyebrowR:'Lesson 5 · Screen D',
+  title:'Factor ranking',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Factor ranking',points:['Consumer choices are shaped by multiple factors — justify your rank.','Use factor vocabulary in full sentences.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Rank + defend',d:'Rank five factors for one fete purchase.'},{t:'Real example',d:'Link a personal buy to price or peers.'},{t:'Ad factor',d:'Name one technique ads use to influence.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Influence check',label:'DISCUSS',prompts:['Which factor would you remove to make choosing fairer?','How do charities use values to influence buyers?','What would parents rank differently from students?','How can you spot manipulation in an ad?']},{k:'exit',items:['name the six types of influencing factors','give an example of each factor','explain how a factor changes a consumer choice','link factors to the fundraiser scenario']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 6 ===== */
 SLIDES.push({ nav:'L6A — The dusty grass at Limes',
   eyebrow:'Week 3 · Lesson 6 · Learn / Read / Notice', eyebrowR:'Lesson 6 · Screen A',
   title:'The dusty grass at Limes State School',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'One patch of land, three futures', body:[
     '<b>Limes State School</b> has a large grassed area — too hot and dusty to use. The community must decide how to develop this <b>natural resource</b> for <b>present and future</b> generations.',
     'Three options: a <b>handball court</b>, a <b>frog pond</b> with native plants, or a <b>vegetable garden</b>. Survey data shows the community wants minimal water use (~350 people), native trees (~300), and larger play areas (~250) — but only one option can win.',
@@ -674,7 +791,7 @@ SLIDES.push({ nav:'L6A — The dusty grass at Limes',
     {k:'imgrow', items:[
       {src:'handball-court.jpeg', alt:'Handball courts'},{src:'frog-pond.jpeg', alt:'Frog pond'},
       {src:'vegetable-garden.jpeg', alt:'Veggie garden'}]}],
-  right:[{k:'hook', q:'If you were principal, which option would you pick — and whose voice would you worry about leaving out?'},
+  right:[{k:'win15', can:'state one trade-off in a land-use decision', prove:'Say what is gained and what is given up.'},{k:'hook', q:'If you were principal, which option would you pick — and whose voice would you worry about leaving out?'},
     {k:'wp', list:[
       {t:'resource allocation',d:'assigning limited resources'},{t:'present needs',d:'what the community needs now'},
       {t:'future needs',d:'what later generations will need'},{t:'alternative',d:'a different option considered'},
@@ -693,7 +810,7 @@ SLIDES.push({ nav:'L6A — The dusty grass at Limes',
 SLIDES.push({ nav:'L6B — Decide for Limes',
   eyebrow:'Week 3 · Lesson 6 · Practise / Decide / Justify', eyebrowR:'Lesson 6 · Screen B',
   title:'Decide for Limes State School',
-  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  screenlbl:'Student screen 2 of 4', wideLeft:true,
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Open worksheet', d:'Complete the <b>Finite resources</b> worksheet — read the data, compare options, recommend.'},
     {t:'Check the chart', d:'Use the Limes bar chart on this slide or in the worksheet. Top 3 priorities? Biggest gap?'},
@@ -709,18 +826,35 @@ SLIDES.push({ nav:'L6B — Decide for Limes',
   <h4>Marking rehearsal</h4><p>A strong answer names the data ("350 people chose…"), compares at least two options, and states a clear recommendation.</p>
   <h4>Extension</h4><p>Can one option satisfy top three survey priorities at once? (Forces creative thinking about hybrid designs.)</p>` });
 
+SLIDES.push({ nav:'L6C — Finite resources — decide',
+  eyebrow:'Week 3 · Lesson 6 · Explore / Stretch / Share', eyebrowR:'Lesson 6 · Screen C',
+  title:'Finite resources — decide',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Finite land at Limes',points:['Land is a finite natural resource — many uses compete for it.','Every land-use choice is a <b>trade-off</b>: something gained, something lost.','Stakeholders include farmers, students, wildlife and council.','Criteria help compare options: jobs, environment, access, cost.']},{k:'discuss',title:'Who wins? Who loses?',label:'DISCUSS',prompts:['If Limes builds a sports field, what might be given up?','How would a farmer view dust and traffic differently from students?','What evidence would council need before deciding?','Can everyone get what they want from the same land?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Options map',d:'List three land uses for Limes — pros and cons each.'},{t:'Stakeholder voice',d:'Write two sentences as farmer, two as student.'},{t:'Trade-off',d:'State one gain and one loss for your preferred option.'},{t:'Criteria score',d:'Score two options on environment and community.'}]},{k:'brain',q:['Why is land-use conflict common near growing towns?','How is a trade-off different from a compromise?','Whose voice is hardest to hear in land debates?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L6D — Stakeholder voices',
+  eyebrow:'Week 3 · Lesson 6 · Secure / Prove / Reflect', eyebrowR:'Lesson 6 · Screen D',
+  title:'Stakeholder voices',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Stakeholder voices',points:['Land decisions affect people differently — argue with reasons.','Trade-offs must be named clearly.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Trade-off sentence',d:'Say what is gained and given up.'},{t:'Stakeholder',d:'Argue one view in 40 seconds.'},{t:'Criteria',d:'Use one criterion word: environment, jobs, access.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card cream"><span class="tag try">LIMES DECIDE</span><p style="margin-top:8px">Vote: sports field, farm expansion or nature strip. Write one sentence from a stakeholder you disagree with.</p></div>`},{k:'exit',items:['interpret community survey data','compare options using advantages and disadvantages','consider present and future needs','justify a recommendation with evidence']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 7 — WEEK 4 ===== */
 SLIDES.push({ nav:'L7A — What do the graphs tell us?', assessTab:'source1',
   eyebrow:'Week 4 · Lesson 7 · Learn / Read / Notice', eyebrowR:'Lesson 7 · Screen A',
   title:'What do the graphs tell us?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'Data before decisions', body:[
     'Communities collect <b>data</b> before they decide — survey results, bar charts, sales figures. At the Limes State School fundraiser, <b>Source 1</b> (in 📋 Assessment) shows what influences people\'s choices: who attends, when the fete runs, and how cold it is in June.',
     'Part A Q1 asks you to identify <b>two factors from the graphs</b>. That means reading the graph carefully: What is being measured? What is the highest bar? What pattern do you see? Then name the factor type (economic, social, personal…) and explain <b>how</b> it would influence a consumer at the fete.',
     'A graph without your explanation is just lines and numbers. <b>You</b> turn it into evidence. Press <b>📋 Assessment</b> (or <b>A</b>) and open the <b>Source 1</b> tab.'
   ], notice:'Open Assessment → Source 1 · read graphs → name the factor → explain how it affects choice.'},
     {k:'img', src:'assessment-media/source-1.png', diagram:true, cap:'Source 1 — fete flyer, who attends, and average temperatures in Limes.'}],
-  right:[{k:'hook', q:'A graph shows iceblock sales drop to almost zero in winter. What factor does that show — and how does it help the Year 5 class decide?'},
+  right:[{k:'win15', can:'read one value from a simple graph correctly', prove:'Point to the bar/point and say the number aloud.'},{k:'hook', q:'A graph shows iceblock sales drop to almost zero in winter. What factor does that show — and how does it help the Year 5 class decide?'},
     {k:'wp', list:[
       {t:'data',d:'information collected and organised'},{t:'interpret',d:'explain what data means'},
       {t:'pattern',d:'a trend you can see in data'},{t:'Source 1',d:'graphs for the assessment'},
@@ -738,7 +872,7 @@ SLIDES.push({ nav:'L7A — What do the graphs tell us?', assessTab:'source1',
 SLIDES.push({ nav:'L7B — Graph detectives', assessTab:'source1',
   eyebrow:'Week 4 · Lesson 7 · Practise / Analyse / Share', eyebrowR:'Lesson 7 · Screen B',
   title:'Graph detectives (Part A prep)',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this — Source 1 practice', rows:[
     {t:'Open Source 1', d:'📋 Assessment → Source 1 tab (opens automatically from this slide).'},
     {t:'Describe it', d:'What does the pie chart show? What do the temperature bars tell you? Use numbers.'},
@@ -754,18 +888,35 @@ SLIDES.push({ nav:'L7B — Graph detectives', assessTab:'source1',
   <h4>Sentence frames</h4><p>Use slide starters — then ban them: students rewrite in own words.</p>
   <h4>Check</h4><p>Q1 factors must come <b>from the graph</b>. Q2 factors must <b>not</b> duplicate the graph — climate, volunteers, taste, etc.</p>` });
 
+SLIDES.push({ nav:'L7C — Graph literacy boost',
+  eyebrow:'Week 4 · Lesson 7 · Explore / Stretch / Share', eyebrowR:'Lesson 7 · Screen C',
+  title:'Graph literacy boost',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Reading graphs like a HASS expert',points:['Always ask: What is this graph about? What are the units?','Axes labels tell you what is being compared.','ABS and other agencies publish data consumers and governments use.','A conclusion must match what the graph actually shows.']},{k:'discuss',title:'Tell the truth of the graph',label:'DISCUSS',prompts:['What is the highest value you can read accurately?','What question does this graph answer?','How could someone misread the scale?','What decision might a council make from spending data?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Read aloud',d:'Point and say three values with units.'},{t:'Title it',d:'Write a graph title that matches the data.'},{t:'Two sentences',d:'Draft a conclusion supported only by the graph.'},{t:'Question',d:'What new question does the graph raise?'}]},{k:'brain',q:['Why are units non-negotiable in data answers?','How is reading a graph different from reading a story?','What makes a conclusion too bold for the data?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L7D — Tell the story',
+  eyebrow:'Week 4 · Lesson 7 · Secure / Prove / Reflect', eyebrowR:'Lesson 7 · Screen D',
+  title:'Tell the story',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Graph story',points:['Conclusions describe patterns — increase, decrease, compare.','Cite the graph when you state a number.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Value call',d:'Read one value aloud correctly.'},{t:'Pattern',d:'Write: The graph shows that…'},{t:'Decision link',d:'Who might use this data to decide?'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Data decisions',label:'DISCUSS',prompts:['What spending change surprised you?','How could this data help plan a school fete?','What is missing that you still want to know?','Why trust ABS over a random blog?']},{k:'exit',items:['read and interpret graph data','identify factors shown in graphs','explain how factors influence consumer choices','distinguish graph factors from other factors']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 8 — WEEK 4 ===== */
 SLIDES.push({ nav:'L8A — The Lorax & the last tree',
   eyebrow:'Week 4 · Lesson 8 · Learn / Read / Notice', eyebrowR:'Lesson 8 · Screen A',
   title:'The Lorax, the last tree, and you',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'When wants consume everything', body:[
     'In <i>The Lorax</i>, the Once-ler keeps producing Thneeds because consumers keep buying. Short-term <b>wants</b> destroy the <b>Truffula trees</b> — a natural resource gone forever. The Lorax speaks for the trees; the Once-ler speaks for profit. Who was the consumer? Who paid the price?',
     'This is <b>cause and effect</b> on a community scale: unlimited wants + no plan for <b>sustainable use of resources</b> = disaster. As consumers we have <b>roles, rights and responsibilities</b> — including thinking about what happens after we buy.',
     'The <b>environmental factor</b> is not optional. Products that harm the environment may — and should — change what we choose.'
   ], notice:'Every purchase sends a message about what kind of future you want.'},
     {k:'img', src:'lorax-trees.jpeg', cap:'Truffula trees — a natural resource destroyed by unlimited consumer wants.'}],
-  right:[{k:'hook', q:'If everyone stopped buying Thneeds on day one, would the trees have been saved? Who had the power?'},
+  right:[{k:'win15', can:'connect The Lorax to a real consumer choice', prove:'Name the choice + who is affected.'},{k:'hook', q:'If everyone stopped buying Thneeds on day one, would the trees have been saved? Who had the power?'},
     {k:'wp', list:[
       {t:'sustainable use',d:'using resources without harming the future'},{t:'cause and effect',d:'actions lead to consequences'},
       {t:'consumerism',d:'culture of buying more and more'},{t:'responsibility',d:'duty to think about effects'},
@@ -784,7 +935,7 @@ SLIDES.push({ nav:'L8A — The Lorax & the last tree',
 SLIDES.push({ nav:'L8B — Responsible consumers',
   eyebrow:'Week 4 · Lesson 8 · Practise / Reflect / Share', eyebrowR:'Lesson 8 · Screen B',
   title:'What makes a responsible consumer?',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Lorax link', d:'Name one cause and one effect from the story.'},
     {t:'Modern example', d:'Find a product where the environmental factor should matter. Would you still buy it?'},
@@ -803,17 +954,34 @@ SLIDES.push({ nav:'L8B — Responsible consumers',
   <h4>HASS concepts</h4><p>Name appendix terms: cause &amp; effect, roles/rights/responsibilities, interconnections, perspectives.</p>
   <h4>Output</h4><p>Class agrees on three fete sustainability rules — post for Part B elaboration later.</p>` });
 
+SLIDES.push({ nav:'L8C — Lorax → real world',
+  eyebrow:'Week 4 · Lesson 8 · Explore / Stretch / Share', eyebrowR:'Lesson 8 · Screen C',
+  title:'Lorax → real world',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'The Lorax and real choices',points:['The Once-ler chased profit until the <b>Truffula</b> ecosystem collapsed.','Consumer demand drove production — every purchase sends a signal.','Short-term gain can cause long-term harm to communities and environments.','Packaging at a fete can mirror Once-ler choices — cheap now, costly later.']},{k:'discuss',title:'Lorax → fete',label:'DISCUSS',prompts:['What Once-ler decision matches single-use fete packaging?','Who plays the Lorax role in real consumer debates?','How do ads make thneeds feel necessary?','What responsibility do buyers share with sellers?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Map the tale',d:'Match three Once-ler choices to real products.'},{t:'Packaging audit',d:'List fete items with high waste.'},{t:'Consumer signal',d:'How does buying less send a message?'},{t:'Responsibility',d:'Draft one personal action you can do.'}]},{k:'brain',q:['Why do people ignore long-term harm when prices are low?','How is a thneed like a gimmick toy?','What would the Lorax ask our fete committee?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L8D — Responsibility pledge',
+  eyebrow:'Week 4 · Lesson 8 · Secure / Prove / Reflect', eyebrowR:'Lesson 8 · Screen D',
+  title:'Responsibility pledge',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Responsibility pledge',points:['Consumer choices affect people and environments.','Small actions repeated matter at community scale.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Choice link',d:'Name a choice + who is affected.'},{t:'Pledge',d:'Write one realistic consumer action.'},{t:'Lorax line',d:'Connect a scene to a modern product.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Last tree talk',label:'DISCUSS',prompts:['Who is responsible — buyer, seller or government?','What packaging swap would our fete try first?','How do prices hide environmental costs?','What did the Lorax want listeners to do differently?']},{k:'exit',items:['explain cause and effect of consumer choices','describe sustainable use of resources','identify environmental factors in decisions','connect consumer responsibility to community actions']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 9 ===== */
 SLIDES.push({ nav:'L9A — Choices have consequences',
   eyebrow:'Week 5 · Lesson 9 · Learn / Read / Notice', eyebrowR:'Lesson 9 · Screen A',
   title:'Every choice has a consequence',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'The decision-making steps', body:[
     'Good decisions follow steps: <b>identify the problem</b> → <b>list options</b> → <b>gather information</b> → <b>weigh advantages and disadvantages</b> → <b>decide</b> → <b>reflect</b>.',
     'Last week you saw what happens when consumers skip the "reflect" step — in <i>The Lorax</i>, short-term wants destroyed a natural resource. Every step matters.',
     'When resources are <b>scarce</b>, choosing one thing means <b>giving up</b> another — economists call this <b>opportunity cost</b> (even if the word is not in your glossary, the idea is!).'
   ], notice:'Decisions have intended AND unintended consequences — for you and your community.'}],
-  right:[{k:'hook', q:'Have you ever bought something and regretted it a week later? What step in decision-making did you skip?'},
+  right:[{k:'win15', can:'define sustainable in one student-friendly sentence', prove:'Include people, planet, or future generations.'},{k:'hook', q:'Have you ever bought something and regretted it a week later? What step in decision-making did you skip?'},
     {k:'wp', list:[
       {t:'cause and effect',d:'actions lead to consequences'},{t:'decision',d:'choosing between alternatives'},
       {t:'consequence',d:'what happens because of a choice'},{t:'opportunity cost',d:'what you give up when you choose'},
@@ -831,7 +999,7 @@ SLIDES.push({ nav:'L9A — Choices have consequences',
 SLIDES.push({ nav:'L9B — Map a decision',
   eyebrow:'Week 5 · Lesson 9 · Practise / Map / Share', eyebrowR:'Lesson 9 · Screen B',
   title:'Map a decision you made',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Pick a real choice', d:'Something you bought or chose recently.'},
     {t:'Map the steps', d:'Which steps did you actually follow? Which did you skip?'},
@@ -844,18 +1012,35 @@ SLIDES.push({ nav:'L9B — Map a decision',
   <h4>Prompt</h4><p>Map a regretted purchase — which step was missing? (<b>Reflect</b> is often skipped.)</p>
   <h4>Online class</h4><p>Students post maps on shared board; comment with one cause → one effect chain.</p>` });
 
+SLIDES.push({ nav:'L9C — Sustainable fete ideas',
+  eyebrow:'Week 5 · Lesson 9 · Explore / Stretch / Share', eyebrowR:'Lesson 9 · Screen C',
+  title:'Sustainable fete ideas',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Sustainable fete thinking',points:['<b>Sustainable</b> choices meet today\'s needs without harming future generations.','People, planet and profit (or purpose) all matter.','Waste, transport and sourcing are sustainability levers at fetes.','Greener options sometimes cost more upfront but save later.']},{k:'discuss',title:'Audit and redesign',label:'DISCUSS',prompts:['What waste do cake stalls create?','How could prizes be sustainable and still fun?','Who pays when we choose cheaper plastic plates?','What would a carbon-conscious fete look like?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Stall audit',d:'List one waste item and a greener swap.'},{t:'Cost vs impact',d:'Compare cheap vs sustainable option.'},{t:'30-second pitch',d:'Pitch your greener stall idea.'},{t:'Criteria',d:'Score an idea on planet and people.'}]},{k:'brain',q:['Why is sustainable not the same as expensive?','What trade-off appears when going greener?','How do values shape sustainable buying?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L9D — Pitch a greener option',
+  eyebrow:'Week 5 · Lesson 9 · Secure / Prove / Reflect', eyebrowR:'Lesson 9 · Screen D',
+  title:'Pitch a greener option',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Greener pitch',points:['Define sustainable in your own words with people or planet.','Pitch should name cost and impact honestly.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Definition',d:'One student-friendly sustainable sentence.'},{t:'Pitch',d:'30-second greener option pitch.'},{t:'Trade-off',d:'Name one cost of your idea.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card dark"><span class="tag try">REDESIGN</span><p style="margin-top:8px">Pick one fete item. Draw before/after: materials, waste, message to buyers.</p></div>`},{k:'exit',items:['describe steps in decision-making','explain cause and effect of a consumer choice','connect scarcity to the need to choose','reflect on consequences of decisions']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 10 ===== */
 SLIDES.push({ nav:'L10A — Budget for the movies',
   eyebrow:'Week 5 · Lesson 10 · Learn / Read / Notice', eyebrowR:'Lesson 10 · Screen A',
   title:'Can you afford the movies?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'The cinema budget challenge', body:[
     'You have <b>$50</b> for a cinema trip with friends. Ticket: $18. Popcorn: $12. Drink: $6. Transport: $8 return. That is <b>$44</b> — but you also wanted snacks later ($10) and a game download ($15).',
     '<b>Strategies for informed choices</b> help here: make a <b>budget</b> (economic factor), <b>prioritise needs over wants</b>, use a <b>decision-making matrix</b>, compare <b>alternatives</b> (stream at home? matinee discount?), and <b>sleep on it</b> before spending.',
     'A budget is not boring — it is freedom. It tells you exactly what you CAN afford before you decide.'
   ], notice:'Economic factors + decision strategies stop impulse buys you regret.'},
     {k:'img', src:'cinema.jpeg', cap:'Tickets, popcorn, drinks — add it up before you go. Can your budget cover it all?'}],
-  right:[{k:'hook', q:'Your friend says "just put it on Afterpay." Is that a strategy or a trap?'},
+  right:[{k:'win15', can:'ask one inquiry question about consumer data', prove:'Start with How/Why/What if and make it researchable.'},{k:'hook', q:'Your friend says "just put it on Afterpay." Is that a strategy or a trap?'},
     {k:'wp', list:[
       {t:'budget',d:'plan for how much you can spend'},{t:'prioritise',d:'rank by importance'},
       {t:'decision-making matrix',d:'table comparing options against criteria'},{t:'alternative',d:'another option to consider'},
@@ -874,7 +1059,7 @@ SLIDES.push({ nav:'L10A — Budget for the movies',
 SLIDES.push({ nav:'L10B — Cinema budget challenge',
   eyebrow:'Week 5 · Lesson 10 · Practise / Budget / Share', eyebrowR:'Lesson 10 · Screen B',
   title:'Plan your cinema trip',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'Open worksheet', d:'Complete the <b>Cinema budget activity</b> worksheet.'},
     {t:'Apply 2 strategies', d:'e.g. prioritise needs, find a cheaper alternative, use a matrix.'},
@@ -889,6 +1074,23 @@ SLIDES.push({ nav:'L10B — Cinema budget challenge',
   notes:`<h4>Assessment link</h4><p>Part A Q4–5: two strategies + how each helps. Strategy bank on slide — insist on explanation, not just naming.</p>
   <h4>Examples</h4><p>"Prioritise needs" → cut game download to afford transport. "Compare alternatives" → stream at home vs cinema.</p>
   <h4>Marking tip</h4><p>Credit specific examples tied to the cinema scenario.</p>` });
+
+SLIDES.push({ nav:'L10C — Question clinic',
+  eyebrow:'Week 5 · Lesson 10 · Explore / Stretch / Share', eyebrowR:'Lesson 10 · Screen C',
+  title:'Question clinic',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Inquiry questions that work',points:['Strong questions start with How, Why or What if.','Closed yes/no questions make weak inquiries.','Researchable questions need evidence you can actually find.','Consumer data from ABS, surveys or interviews can answer questions.']},{k:'discuss',title:'Upgrade the question',label:'DISCUSS',prompts:['Why is Are fetes good? too weak?','What evidence would answer How do prices affect sales?','How narrow should a Year 5 inquiry be?','What question would help the fete committee decide?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Closed → open',d:'Rewrite three weak questions.'},{t:'Evidence plan',d:'List what data would answer your question.'},{t:'Partner test',d:'Can your partner find evidence for it?'},{t:'Fete focus',d:'Draft one question about consumer behaviour.'}]},{k:'brain',q:['What makes a question too big for one unit?','How is inquiry different from opinion?','Which source would you try first?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L10D — Data plan seed',
+  eyebrow:'Week 5 · Lesson 10 · Secure / Prove / Reflect', eyebrowR:'Lesson 10 · Screen D',
+  title:'Data plan seed',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Data plan seed',points:['Questions and evidence plans belong together.','Name source types: survey, ABS, interview, observation.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Inquiry Q',d:'Write one How/Why question.'},{t:'Evidence',d:'Name two sources that could help.'},{t:'Researchable',d:'Explain why it is not too vague.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Question clinic',label:'DISCUSS',prompts:['Which question would produce the most useful fete data?','What bias might a survey have?','How long should data collection take?','What will you do if sources disagree?']},{k:'exit',items:['use a budget to plan spending','apply at least two decision-making strategies','explain how each strategy helps','make an informed purchase decision']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
 
 /* ===================== PHASE 3 ======================== */
 SLIDES.push({ type:'divider', nav:'Phase 3 — Strategies, TEEL & Assessment',
@@ -908,14 +1110,14 @@ SLIDES.push({ type:'divider', nav:'Phase 3 — Strategies, TEEL & Assessment',
 SLIDES.push({ nav:'L11A — Which camera should we buy?',
   eyebrow:'Week 6 · Lesson 11 · Learn / Read / Notice', eyebrowR:'Lesson 11 · Screen A',
   title:'Which camera should we buy?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'Compare before you commit', body:[
     'The school media club needs a new camera. Option A: cheap, small, poor in low light. Option B: mid-price, good all-rounder. Option C: expensive, professional quality — but blows the budget.',
     'A <b>decision-making matrix</b> compares options against <b>criteria</b> that matter: price, quality, ease of use, warranty. Score each option, add up, and the best fit becomes clear — but only if you chose the right criteria first!',
     'This is exactly how communities decide between handball courts, frog ponds and vegetable gardens — and how Year 5 will choose a fundraiser product.'
   ], notice:'A matrix turns a messy decision into clear, comparable data.'},
     {k:'img', src:'cameras.jpeg', cap:'Three cameras, three price points — which criteria matter most to the media club?'}],
-  right:[{k:'hook', q:'If "looks cool" is your only criterion, which camera wins? Is that a good way to decide?'},
+  right:[{k:'win15', can:'use a decision matrix with two criteria', prove:'Score two options and say which wins and why.'},{k:'hook', q:'If "looks cool" is your only criterion, which camera wins? Is that a good way to decide?'},
     {k:'wp', list:[
       {t:'criteria',d:'standards used to judge options'},{t:'decision-making matrix',d:'table comparing alternatives'},
       {t:'compare',d:'examine similarities and differences'},{t:'evaluate',d:'judge the value of each option'},
@@ -934,7 +1136,7 @@ SLIDES.push({ nav:'L11A — Which camera should we buy?',
 SLIDES.push({ nav:'L11B — Build your matrix',
   eyebrow:'Week 6 · Lesson 11 · Practise / Compare / Decide', eyebrowR:'Lesson 11 · Screen B',
   title:'Build a decision matrix',
-  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  screenlbl:'Student screen 2 of 4', wideLeft:true,
   left:[{k:'steps', label:'Do this — camera or MP3 preview', rows:[
     {t:'Choose criteria', d:'At least 4: e.g. price, quality, ease of use, popularity.'},
     {t:'Score options', d:'Rate each option 1–5 for each criterion.'},
@@ -953,18 +1155,35 @@ SLIDES.push({ nav:'L11B — Build your matrix',
   <h4>Common gap</h4><p>Criteria chosen after they already picked a favourite — discuss criteria-first discipline.</p>
   <h4>Next lesson</h4><p>MP3 + picnic scenarios — more independent.</p>` });
 
+SLIDES.push({ nav:'L11C — Matrix practice',
+  eyebrow:'Week 6 · Lesson 11 · Explore / Stretch / Share', eyebrowR:'Lesson 11 · Screen C',
+  title:'Matrix practice',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Decision matrices in real life',points:['Matrices score options against criteria — not gut feeling alone.','Criteria might be price, quality, sustainability, fun.','Scores should be explained, not mysterious numbers.','Matrices help groups agree when opinions differ.']},{k:'discuss',title:'Score with reasons',label:'DISCUSS',prompts:['Why score out of 5 instead of picking a favourite?','What happens if criteria conflict — cheap but wasteful?','How do you avoid everyone copying the same scores?','Which fete purchase suits a matrix best?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Mini matrix',d:'Two options, two criteria — score and total.'},{t:'Justify',d:'Write one sentence defending a score.'},{t:'Camera case',d:'Apply matrix to Which camera should we buy?'},{t:'Group rule',d:'Agree how to break a tie.'}]},{k:'brain',q:['When does a matrix fail to capture what matters?','How is this more fair than loudest voice wins?','What criterion should fete committees always include?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L11D — Defend the winner',
+  eyebrow:'Week 6 · Lesson 11 · Secure / Prove / Reflect', eyebrowR:'Lesson 11 · Screen D',
+  title:'Defend the winner',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Defend the winner',points:['Winning option must be explained with criteria language.','I like it is not a justification.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Winner',d:'State which option wins and why.'},{t:'Score talk',d:'Explain one score without saying just because.'},{t:'Trade-off',d:'Name what you give up in the winner.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card cream"><span class="tag try">MATRIX</span><p style="margin-top:8px">Complete a 2×2 matrix for a fete spend decision. Circle the winner and write a 2-sentence defence.</p></div>`},{k:'exit',items:['build a decision-making matrix','compare options using criteria','make a justified choice','explain how the matrix helped']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 12 ===== */
 SLIDES.push({ nav:'L12A — Write like a HASS expert',
   eyebrow:'Week 6 · Lesson 12 · Learn / Read / Notice', eyebrowR:'Lesson 12 · Screen A',
   title:'Write like a HASS expert (TEEL)',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'TEEL — the paragraph that persuades', body:[
     'Part B asks you to <b>explain your decision</b> in writing. Use <b>TEEL</b>:',
     '<b>T</b>opic sentence — state your decision clearly. <b>E</b>xplain — what strategies did you use? <b>E</b>laborate — what factors informed your choice? Pros and cons? Why NOT the other options? <b>L</b>ink — restate your decision and why.',
     'A TEEL paragraph is not fluff — it is proof that you thought like a consumer economist.'
   ], notice:'Part B Q2 uses TEEL. Master it here, use it in the assessment.'},
     {k:'img', src:'teel-writing.jpeg', cap:'TEEL gives your paragraph a clear structure — Topic, Explain, Elaborate, Link.'}],
-  right:[{k:'hook', q:'Which is stronger: "I picked hot chocolate because it is nice" or "I picked hot chocolate because…"? Finish the second one.'},
+  right:[{k:'win15', can:'cite one source type for a consumer decision', prove:'Name primary/secondary or a specific reliable source.'},{k:'hook', q:'Which is stronger: "I picked hot chocolate because it is nice" or "I picked hot chocolate because…"? Finish the second one.'},
     {k:'wp', list:[
       {t:'topic sentence',d:'states your main point'},{t:'explain',d:'how you decided'},
       {t:'elaborate',d:'details, evidence, pros/cons'},{t:'link',d:'restates and concludes'},
@@ -983,7 +1202,7 @@ SLIDES.push({ nav:'L12A — Write like a HASS expert',
 SLIDES.push({ nav:'L12B — TEEL practise',
   eyebrow:'Week 6 · Lesson 12 · Practise / Write / Share', eyebrowR:'Lesson 12 · Screen B',
   title:'Write your first TEEL paragraph',
-  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  screenlbl:'Student screen 2 of 4', wideLeft:true,
   left:[{k:'html', html:`<div class="card cream"><span class="tag try">TEEL FRAME — Part B format</span>
     <table class="dt"><tr><th>Part</th><th>Prompt</th><th>Your writing</th></tr>
     <tr><td><b>T.S.</b></td><td>What product should the school sell?</td><td style="height:28px"></td></tr>
@@ -998,11 +1217,28 @@ SLIDES.push({ nav:'L12B — TEEL practise',
   <h4>Checklist</h4><p>At least 3 glossary terms: consumer, resource allocation, factors, strategies, etc.</p>
   <h4>Support</h4><p>Sentence starters OK for draft — final Part B must be in student's own words.</p>` });
 
+SLIDES.push({ nav:'L12C — Source quality check',
+  eyebrow:'Week 6 · Lesson 12 · Explore / Stretch / Share', eyebrowR:'Lesson 12 · Screen C',
+  title:'Source quality check',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Sources you can trust',points:['<b>Primary</b> sources are firsthand (interviews, receipts, photos).','<b>Secondary</b> sources interpret primary data (ABS reports, news).','Ads are biased — useful for factor study, not neutral facts.','Cross-check surprising claims with a second source.']},{k:'discuss',title:'Trust check',label:'DISCUSS',prompts:['Why is ABS stronger than a random influencer for spending facts?','What makes a school survey primary data?','When might a blog still be useful?','How do you spot a shaky source quickly?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Sort sources',d:'Primary vs secondary card sort.'},{t:'Fete source',d:'Pick best source for a Part A claim.'},{t:'Bias spot',d:'Name the bias in a sample ad.'},{t:'Cross-check',d:'Find two sources on one fact.'}]},{k:'brain',q:['Why do Part A paragraphs need reliable evidence?','What happens if everyone cites the same weak blog?','How recent should data be for a fete decision?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L12D — Source for the fete',
+  eyebrow:'Week 6 · Lesson 12 · Secure / Prove / Reflect', eyebrowR:'Lesson 12 · Screen D',
+  title:'Source for the fete',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Source for the fete',points:['Cite source type or name in Part A writing.','Reliable evidence strengthens consumer arguments.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Source pick',d:'Name best source for one claim.'},{t:'Why reliable',d:'Two reasons it is trustworthy.'},{t:'Cite practice',d:'Write Author/organisation + fact.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Expert writing',label:'DISCUSS',prompts:['How is HASS writing different from a story?','What source would you avoid — and why?','How do experts show evidence without copying?','What will you cite in Part A?']},{k:'exit',items:['structure a paragraph using TEEL','use HASS vocabulary correctly','explain strategies and factors in writing','link back to my main decision']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 13 ===== */
 SLIDES.push({ nav:'L13A — MP3 or picnic?',
   eyebrow:'Week 7 · Lesson 13 · Learn / Read / Notice', eyebrowR:'Lesson 13 · Screen A',
   title:'MP3 player or picnic budget?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'Two decisions, same skills', body:[
     '<b>Decision 1 — MP3 player:</b> Apply your matrix to choose the best MP3 player. Criteria: price, storage, battery, durability. Use strategies: research, compare alternatives, prioritise needs.',
     '<b>Decision 2 — Picnic budget:</b> Plan a class picnic for 25 people with a fixed budget. Every dollar allocated to food cannot go to games or transport. <b>Resource allocation</b> again — sound familiar?',
@@ -1010,7 +1246,7 @@ SLIDES.push({ nav:'L13A — MP3 or picnic?',
   ], notice:'Practise decisions now — the assessment asks you to do this for real.'},
     {k:'imgrow', items:[
       {src:'mp3-player.jpeg', alt:'MP3 player', fit:true},{src:'picnic.jpeg', alt:'Picnic budget'}]}],
-  right:[{k:'hook', q:'You have $100 for a picnic OR an MP3 player — you cannot have both. What do you give up?'},
+  right:[{k:'win15', can:'draft one Part A paragraph with a clear claim', prove:'Claim + reason + evidence starter on screen.'},{k:'hook', q:'You have $100 for a picnic OR an MP3 player — you cannot have both. What do you give up?'},
     {k:'wp', list:[
       {t:'compare',d:'weigh options against each other'},{t:'allocate',d:'distribute limited money'},{t:'research',d:'gather information before deciding'},{t:'prioritise',d:'rank by importance'},{t:'evidence',d:'facts that support your choice'},{t:'justify',d:'give clear reasons'}
     ]},
@@ -1027,7 +1263,7 @@ SLIDES.push({ nav:'L13A — MP3 or picnic?',
 SLIDES.push({ nav:'L13B — MP3 + picnic decisions',
   eyebrow:'Week 7 · Lesson 13 · Practise / Decide / Write', eyebrowR:'Lesson 13 · Screen B',
   title:'Make both decisions',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Do this', rows:[
     {t:'MP3 worksheet', d:'Complete <b>Making informed decisions — MP3 player</b>.'},
     {t:'Picnic worksheet', d:'Complete <b>Budget for a picnic at the beach</b>.'},
@@ -1039,18 +1275,35 @@ SLIDES.push({ nav:'L13B — MP3 + picnic decisions',
   <h4>Conference</h4><p>Check picnic budgets add to ≤ total; MP3 matrix has four criteria minimum.</p>
   <h4>TEEL sentence</h4><p>One quality sentence only — preview Part B depth required next week.</p>` });
 
+SLIDES.push({ nav:'L13C — Part A writing studio',
+  eyebrow:'Week 7 · Lesson 13 · Explore / Stretch / Share', eyebrowR:'Lesson 13 · Screen C',
+  title:'Part A writing studio',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Part A writing studio',points:['Structure: <b>claim</b> + <b>reason</b> + <b>evidence</b>.','Topic: consumer choice (MP3 player vs picnic, etc.).','Formal tone — no slang; precise factor vocabulary.','Paragraphs answer the question directly.']},{k:'discuss',title:'Build the paragraph',label:'DISCUSS',prompts:['Does your claim answer the question in the first sentence?','Does evidence actually support the reason?','How do you weave ABS or example data smoothly?','What is the difference between evidence and opinion?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Claim first',d:'Write one clear claim sentence.'},{t:'Evidence weave',d:'Add one fact with source hint.'},{t:'TEEL check',d:'Highlight claim, reason, evidence.'},{t:'Peer swap',d:'Does evidence match the claim?'}]},{k:'brain',q:['What is the most common Part A weakness?','How long should a Year 5 paragraph be?','Why cite sources in brackets or flowing text?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L13D — Peer edit pass',
+  eyebrow:'Week 7 · Lesson 13 · Secure / Prove / Reflect', eyebrowR:'Lesson 13 · Screen D',
+  title:'Peer edit pass',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Peer edit pass',points:['Peer edit asks: Does evidence support the claim?','Glow/grow using criteria words.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Draft',d:'One paragraph with claim + evidence.'},{t:'Partner edit',d:'One glow, one grow — specific.'},{t:'Revise',d:'Act on one grow immediately.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card dark"><span class="tag try">CHECKLIST</span><p style="margin-top:8px">☐ Claim answers question ☐ Factor named ☐ Evidence cited ☐ Formal tone ☐ No unrelated story</p></div>`},{k:'exit',items:['apply a decision matrix to choose a product','allocate a budget across categories','use strategies to make informed choices','write a sentence using HASS vocabulary']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== LESSON 14 ===== */
 SLIDES.push({ nav:'L14A — Haircut economics', assessTab:'source2',
   eyebrow:'Week 7 · Lesson 14 · Learn / Read / Notice', eyebrowR:'Lesson 14 · Screen A',
   title:'The $35 haircut question',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', wow:true, heading:'Services cost more than you think', body:[
     'A haircut is a <b>service</b> — you are paying for human skill and time, not just a tangible good. Salon: $35. Barber: $20. Mum\'s kitchen scissors: free — but results vary!',
     'Factors at play: <b>economic</b> (budget), <b>personal</b> (style preference), <b>social</b> (what friends think), <b>psychological</b> (brand of salon = "fancy").',
     'Now connect to the <b>fundraiser</b>: Limes State School must choose ONE product — hot chocolate & coffee, iceblocks, or pancakes. Not enough resources for all three. <b>Source 2</b> (📋 Assessment) has the full comparison data. Part A practises factors and strategies; Part B is your TEEL decision.'
   ], notice:'Part A this week. Part B next week. You have been practising for this all term.'},
     {k:'img', src:'haircut.jpeg', cap:'A haircut is a service — you pay for skill and time, not just scissors.'}],
-  right:[{k:'hook', q:'Why does a haircut cost $35 when the scissors already exist? What are you really paying for?'},
+  right:[{k:'win15', can:'list what Part A must include from the marking guide', prove:'Three must-haves in your own words.'},{k:'hook', q:'Why does a haircut cost $35 when the scissors already exist? What are you really paying for?'},
     {k:'wp', list:[
       {t:'service',d:'intangible — skill and time'},{t:'human resource',d:'the hairdresser\'s labour'},{t:'Source 2',d:'data comparing fundraiser products'},{t:'profit',d:'money earned after costs'},{t:'fundraising',d:'raising money for a cause'},{t:'product option',d:'a choice of what to sell'}
     ]},
@@ -1067,7 +1320,7 @@ SLIDES.push({ nav:'L14A — Haircut economics', assessTab:'source2',
 SLIDES.push({ nav:'L14B — Part A rehearsal', assessTab:'source1',
   eyebrow:'Week 7 · Lesson 14 · Practise / Rehearse / Prepare', eyebrowR:'Lesson 14 · Screen B',
   title:'Part A rehearsal — fundraiser',
-  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  screenlbl:'Student screen 2 of 4', wideLeft:true,
   left:[{k:'steps', label:'Rehearse Part A', rows:[
     {t:'Q1–2 Factors', d:'Name 4 factors (2 from graphs + 2 others). State the TYPE and the EFFECT.'},
     {t:'Q3 Decisions', d:'What must the class decide about the 3 product options?'},
@@ -1089,6 +1342,23 @@ SLIDES.push({ nav:'L14B — Part A rehearsal', assessTab:'source1',
   <h4>Source 1 reminder</h4><p>📋 Assessment → Source 1 — practise reading axes and numbers, not just titles.</p>
   <h4>Calm nerves</h4><p>They have done L7B, L14B, and checkpoint slide — this is rehearsal, not new content.</p>` });
 
+SLIDES.push({ nav:'L14C — Marking guide decoder',
+  eyebrow:'Week 7 · Lesson 14 · Explore / Stretch / Share', eyebrowR:'Lesson 14 · Screen C',
+  title:'Marking guide decoder',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Marking guide decoder',points:['Criteria tell you what excellent, sound and developing look like.','Translate teacher language into student checklists.','Haircut economics links goods, services and factors.','Self-marking before submit catches gaps early.']},{k:'discuss',title:'Speak criteria',label:'DISCUSS',prompts:['What does justify mean in the marking guide?','How is explain different from list?','What evidence counts for haircut case study?','Which criterion is weighted most?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Decode',d:'Rewrite three criteria in kid-friendly words.'},{t:'Sample score',d:'Honestly score a model paragraph.'},{t:'Gap find',d:'What is missing from the weak sample?'},{t:'Checklist',d:'Build a 5-item submit checklist.'}]},{k:'brain',q:['Why self-mark before the teacher marks?','How do criteria reduce arguing about grades?','What is one must-have for Part A excellence?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L14D — Self-mark a sample',
+  eyebrow:'Week 7 · Lesson 14 · Secure / Prove / Reflect', eyebrowR:'Lesson 14 · Screen D',
+  title:'Self-mark a sample',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Self-mark a sample',points:['Use marking guide language in glows and grows.','Three must-haves in your own words.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Must-haves',d:'List three from the guide.'},{t:'Self-mark',d:'Score sample with one reason.'},{t:'Own work',d:'Check your draft against guide.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Criteria talk',label:'DISCUSS',prompts:['Which criterion is hardest to meet?','How would you improve the sample one level up?','What is excellent evidence for a service?','What will you check tonight?']},{k:'exit',items:['identify factors that influence consumer choices','explain decision-making strategies with examples','describe decisions when resources are limited','feel ready for Part A']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== PART A CHECKPOINT ===== */
 SLIDES.push({ type:'checkpoint', nav:'★ Part A Assessment (Week 7)', assessTab:'task',
   eyebrow:'Week 7 · Assessment',
@@ -1103,14 +1373,14 @@ SLIDES.push({ type:'checkpoint', nav:'★ Part A Assessment (Week 7)', assessTab
 SLIDES.push({ nav:'L15A — Choose the fundraiser product', assessTab:'source2',
   eyebrow:'Week 8 · Lesson 15 · Learn / Read / Notice', eyebrowR:'Lesson 15 · Screen A',
   title:'Which product should we sell?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'Evaluate Source 2 — then decide', body:[
     'Open <b>Source 2</b> in 📋 Assessment (this slide opens it automatically). Compare all three product options. Do not just pick the highest profit — evaluate: <b>climate</b>, <b>taste/demand</b>, <b>price</b>, <b>resources needed</b>, <b>human capital</b> (volunteers), and <b>environmental</b> impact.',
     'Hot chocolate & coffee: highest profit ($1500), suits cold weather, appeals to adults and kids, needs stall workers and drink makers. Iceblocks: poor fit for cold day. Pancakes: high effort, takeaway problem, most expensive for buyers.',
     'Your <b>decision</b> must be defensible — and your <b>TEEL paragraph</b> must show HOW you decided, not just WHAT you picked.'
   ], notice:'Assessment → Source 2 · Part B = decision + TEEL paragraph.'},
     {k:'img', src:'assessment-media/source-2.png', diagram:true, cap:'Source 2 — prices, resources, and factors for all three product options.'}],
-  right:[{k:'hook', q:'If you were a customer at the fete — not the organiser — which would YOU buy? Does that change the "best" product to sell?'},
+  right:[{k:'win15', can:'state my Part B focus decision in one sentence', prove:'Name the fete choice and the main factor.'},{k:'hook', q:'If you were a customer at the fete — not the organiser — which would YOU buy? Does that change the "best" product to sell?'},
     {k:'brain', q:[
       'Can the highest-profit option be the wrong choice for the community?',
       'What would you say to someone who picked iceblocks? How would you respect their view while disagreeing?',
@@ -1127,7 +1397,7 @@ SLIDES.push({ nav:'L15A — Choose the fundraiser product', assessTab:'source2',
 SLIDES.push({ nav:'L15B — Draft your TEEL', assessTab:'source2',
   eyebrow:'Week 8 · Lesson 15 · Practise / Write / Revise', eyebrowR:'Lesson 15 · Screen B',
   title:'Draft your Part B paragraph',
-  screenlbl:'Student screen 2 of 2', wideLeft:true,
+  screenlbl:'Student screen 2 of 4', wideLeft:true,
   left:[{k:'html', html:`<div class="card cream"><span class="tag try">PART B — TEEL DRAFT</span>
     <p style="margin:8px 0"><b>Q1 decision:</b> The product the Year 5 class will sell is: _______________</p>
     <p style="margin:8px 0"><b>T.S.</b> ________________________________________</p>
@@ -1147,6 +1417,23 @@ SLIDES.push({ nav:'L15B — Draft your TEEL', assessTab:'source2',
   <h4>Support writers</h4><p>Oral rehearsal before writing — students say Elaborate aloud first.</p>
   <h4>Homework option</h4><p>Polish draft paragraph if Part B is next day.</p>` });
 
+SLIDES.push({ nav:'L15C — Part B planning board',
+  eyebrow:'Week 8 · Lesson 15 · Explore / Stretch / Share', eyebrowR:'Lesson 15 · Screen C',
+  title:'Part B planning board',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Part B planning board',points:['Part B focuses a consumer decision for the fete context.','Outline sources, factors and justification before drafting.','Gap check: what evidence is still missing?','Strong plans save drafting time.']},{k:'discuss',title:'Plan before polish',label:'DISCUSS',prompts:['What is your one-sentence focus decision?','Which factors will you compare?','What source will you cite for spending or sustainability?','What question is still unanswered?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Focus sentence',d:'Name fete choice + main factor.'},{t:'Source list',d:'Three sources you could use.'},{t:'Outline',d:'Bullet claim, reasons, evidence slots.'},{t:'Gap check',d:'Write what evidence is missing.'}]},{k:'brain',q:['How is Part B broader than Part A?','What happens if you draft without a plan?','Which factor will be your lead argument?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L15D — Gap check',
+  eyebrow:'Week 8 · Lesson 15 · Secure / Prove / Reflect', eyebrowR:'Lesson 15 · Screen D',
+  title:'Gap check',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Gap check',points:['Plans should expose missing evidence early.','Focus decision stays one clear sentence.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Focus',d:'One sentence: fete choice + factor.'},{t:'Gaps',d:'List two evidence gaps and how to fill them.'},{t:'Timeline',d:'What is due next lesson?'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'html',html:`<div class="card cream"><span class="tag try">PLAN BOARD</span><p style="margin-top:8px">Columns: <b>Claim</b> | <b>Factors</b> | <b>Sources</b> | <b>Still need</b> — fill sticky notes for Part B.</p></div>`},{k:'exit',items:['make a justified decision using Source 2','draft a TEEL paragraph','explain strategies and factors','address alternative product options']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
+
 /* ===== PART B CHECKPOINT ===== */
 SLIDES.push({ type:'checkpoint', nav:'★ Part B Assessment (Week 8)', assessTab:'source2',
   eyebrow:'Week 8 · Assessment',
@@ -1162,14 +1449,14 @@ SLIDES.push({ type:'checkpoint', nav:'★ Part B Assessment (Week 8)', assessTab
 SLIDES.push({ nav:'L16A — The fete scenario',
   eyebrow:'Week 8 · Lesson 16 · Review / Reflect / Discuss', eyebrowR:'Lesson 16 · Screen A',
   title:'Back to the fete — what did we learn?',
-  screenlbl:'Student screen 1 of 2', wideLeft:true,
+  screenlbl:'Student screen 1 of 4', wideLeft:true,
   left:[{k:'read', heading:'From needs to community action', body:[
     'You started with a simple question: need or want? You ended by helping a community decide how to allocate scarce resources at a fundraising event — using factors, strategies, data, and TEEL.',
     'The <b>fete scenario</b> ties it together: goods and services, human and capital resources, consumer choices shaped by climate and price, and the reality that <b>you cannot have everything</b>.',
     'That is economics. That is HASS. And whether you are buying a haircut, planning a picnic, or choosing a camera — you are thinking like an informed consumer.'
   ], notice:'Smart consumers and communities ask questions, compare options, and justify decisions with evidence.'},
     {k:'img', src:'school-fete.jpeg?v=3', cap:'The school fete — goods, services, choices, and community all in one place.'}],
-  right:[{k:'hook', q:'What is one decision you will make differently now — and which strategy will you use?'},
+  right:[{k:'win15', can:'give peer feedback using criteria language', prove:'One glow + one grow linked to the guide.'},{k:'hook', q:'What is one decision you will make differently now — and which strategy will you use?'},
     {k:'brain', q:[
       'If you could add one product to the fete, what would it be and why?',
       'How does consumer choice connect to caring for the environment (think Lorax)?',
@@ -1185,7 +1472,7 @@ SLIDES.push({ nav:'L16A — The fete scenario',
 SLIDES.push({ nav:'L16B — Showcase',
   eyebrow:'Week 8 · Lesson 16 · Share / Celebrate', eyebrowR:'Lesson 16 · Screen B',
   title:'Showcase your consumer thinking',
-  screenlbl:'Student screen 2 of 2',
+  screenlbl:'Student screen 2 of 4',
   left:[{k:'steps', label:'Share with the class', rows:[
     {t:'Best decision', d:'Tell us a decision you made well this term — real life or in class.'},
     {t:'Best strategy', d:'Which strategy will you keep using? (budget, matrix, TEEL…)'},
@@ -1195,6 +1482,23 @@ SLIDES.push({ nav:'L16B — Showcase',
   notes:`<h4>Celebration</h4><p>Invite volunteers to share a TEEL paragraph, matrix, or real-life decision they're proud of.</p>
   <h4>Prompts on slide</h4><p>Best decision · best strategy · unanswered question — use as talk-show format if time allows.</p>
   <h4>Exit survey (optional)</h4><p>One thing learned · one strategy I'll use · one word for the unit.</p>` });
+
+SLIDES.push({ nav:'L16C — Feedback clinic',
+  eyebrow:'Week 8 · Lesson 16 · Explore / Stretch / Share', eyebrowR:'Lesson 16 · Screen C',
+  title:'Feedback clinic',
+  screenlbl:'Student screen 3 of 4', wideLeft:true,
+  left:[{k:'know',label:'KNOWLEDGE',heading:'Feedback that improves work',points:['Replace good job with criteria-linked feedback.','Glow = specific strength; grow = actionable next step.','Final polish targets structure, evidence and tone.','Fete scenario integrates the whole unit.']},{k:'discuss',title:'Feedback clinic',label:'DISCUSS',prompts:['Why is Add ABS data a better grow than write more?','How do you receive feedback without defending?','What will you polish first — claim or evidence?','How does the fete scenario test all unit ideas?']}],
+  right:[{k:'steps',label:'Explore / Stretch',rows:[{t:'Criteria glow',d:'Write one glow using guide words.'},{t:'Action grow',d:'One grow your partner can do tonight.'},{t:'Polish list',d:'Three edits before submit.'},{t:'Scenario talk',d:'Link fete role to one unit concept.'}]},{k:'brain',q:['What feedback helped you most this unit?','How is HASS feedback like science peer review?','What skill will you carry to Year 6?']}],
+  notes:`<h4>Screen C — deepen</h4><p>Pair talk before independent work. Circulate and listen for precise vocabulary.</p><h4>Teacher tip</h4><p>Cold-call one student per discuss prompt. Capture a strong sentence on the board.</p>` });
+
+SLIDES.push({ nav:'L16D — Final polish plan',
+  eyebrow:'Week 8 · Lesson 16 · Secure / Prove / Reflect', eyebrowR:'Lesson 16 · Screen D',
+  title:'Final polish plan',
+  screenlbl:'Student screen 4 of 4',
+  left:[{k:'know',label:'SUMMARY',heading:'Final polish plan',points:['Three targeted edits beat random rewriting.','Celebrate growth with evidence.']},{k:'steps',label:'Secure / Prove',rows:[{t:'Polish plan',d:'Three specific edits listed.'},{t:'Peer feedback',d:'One glow + one grow exchanged.'},{t:'Submit check',d:'Tick formatting, sources, spelling.'},{t:'Exit ready',d:'Exit check.'}]}],
+  right:[{k:'discuss',title:'Fete reflection',label:'DISCUSS',prompts:['What consumer skill will help you most at the real fete?','Which lesson changed your mind most?','What would you tell Year 4 about this unit?','What is one question you still wonder?']},{k:'exit',items:['explain how communities allocate limited resources','use HASS vocabulary to discuss consumer decisions','apply decision-making strategies in real life','reflect on my growth as an informed consumer']}],
+  notes:`<h4>Screen D — prove</h4><p>Students work independently first, then peer-check. Run exit check cold.</p><h4>Teacher tip</h4><p>Re-teach if fewer than 75% can state the 15-minute win.</p>` });
+
 
 /* ============================ APPENDIX ============================ */
 SLIDES.push({ type:'appendix-index', nav:'Appendix — Worksheets',
@@ -1310,6 +1614,29 @@ function readCard(r){
     <h3>${r.heading}</h3>${(r.body||[]).map(p=>`<p style="margin-bottom:10px">${p}</p>`).join('')}
     ${r.notice?`<div class="notice"><b>Notice:</b> ${r.notice}</div>`:''}</div>`;
 }
+
+function win15(b){
+  return `<div class="win15"><div class="lbl">⏱ By 15 minutes · demonstrable win</div>
+    <p class="can">I can ${b.can}</p>
+    <p class="prove"><b>Prove it:</b> ${b.prove}</p></div>`;
+}
+
+
+function knowCard(k){
+  const body=(k.body||[]).map(p=>`<p style="margin-bottom:8px;line-height:1.4">${p}</p>`).join('');
+  const pts=(k.points||[]).map(p=>`<li>${p}</li>`).join('');
+  return `<div class="card cream know-card"><span class="tag read">${k.label||'KNOWLEDGE'}</span>
+    ${k.heading?`<h3>${k.heading}</h3>`:''}${body}
+    ${pts?`<ul class="know-list">${pts}</ul>`:''}
+    ${k.fact?`<div class="notice"><b>Key idea:</b> ${k.fact}</div>`:''}</div>`;
+}
+function discussCard(d){
+  return `<div class="card dark discuss-card"><span class="tag try">${d.label||'DISCUSS'}</span>
+    <h3>${d.title||'Talk it through'}</h3>
+    <ul class="discuss-list">${(d.prompts||[]).map((p,i)=>`<li><span class="n">${i+1}</span><span>${p}</span></li>`).join('')}</ul>
+    ${d.tip?`<p class="discuss-tip">${d.tip}</p>`:''}</div>`;
+}
+
 function exitCheck(items){
   return `<div class="exit"><h4>Exit check — I can…</h4><div class="exit-grid">${
     items.map(i=>`<div class="echk"><span class="bx">✓</span><span>${i}</span></div>`).join('')}</div></div>`;
@@ -1425,6 +1752,9 @@ function renderBlock(b){
     case 'wp': return wordpower(b.list);
     case 'brain': return bq(b.q);
     case 'steps': return steps(b);
+    case 'win15': return win15(b);
+    case 'know': return knowCard(b);
+    case 'discuss': return discussCard(b);
     case 'exit': return exitCheck(b.items);
     case 'img': return `<div class="imgframe${b.diagram?' diagram':''}${b.fit?' fit':''}"><img src="${b.src}" alt="${b.alt||''}" loading="lazy">${b.cap?`<div class="cap">${b.cap}</div>`:''}</div>`;
     case 'imgrow': { const n=Math.min(b.items.length,4);
